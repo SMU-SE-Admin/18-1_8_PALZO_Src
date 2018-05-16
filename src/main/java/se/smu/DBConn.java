@@ -8,12 +8,13 @@
  * history
  *   author  version     date              breif
  *   김한동       0.0.1.   2018-05-15          초안 작성
+ *   김한동       0.0.2.   2018-05-16     데이터베이스 연결자 통합
  *   
  *   
  * -----------------------------------
  */
 
-package smu.palzo;
+package se.smu;
 
 public class DBConn {
 	//접속할 DB 정보
@@ -24,6 +25,8 @@ public class DBConn {
 	public static String ID = "root";
 	public static String PW = "1q2w3e4r";
 	
-	// DB 정의
+	//각각의 DB 정의
 	public static String USERDB = "USE UserDB";
+	public static String SUBJECTDB = "USE SubjectDB";
+	public static String TODODB = "USE TodoDB";
 }
