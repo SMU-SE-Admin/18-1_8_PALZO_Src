@@ -1,14 +1,14 @@
 /**
  * title : UserDB.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 0.0.0.
+ * version : 0.0.1.
  * since : 2018 - 05 - 07
  * brief : UserDB 클래스
  * -----------------------------------
  * history
  *   author  version     date        brief
  *   김한동       0.0.0.   2018-05-18    초안 작성
- *   
+ *   김한동       0.0.1.   2018-05-18    오타 수정
  * -----------------------------------
  */
 
@@ -19,7 +19,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class UserDB {
-	void UserTale(String id, String pw, String email) {
+	void UserTable(String id, String pw, String email) {
 		try {
 				// 기본 변수 선언
 				int nUllcheck = 0;
