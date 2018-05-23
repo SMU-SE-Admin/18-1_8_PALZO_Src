@@ -9,7 +9,7 @@
  *   author  version     date                                                    brief
  *   안동주       0.0.0.   2018-05-22                                                초안 작성
  *   김한동       0.1.0.   2018-05-23     ID, PW 필드 바뀐 것 수정, ActionListener 작성, 추후 작성될 TodoList, IdError 항목 주석처리, DB 연결 문제 해결 진행 중
- *   김한동       1.0.0.   2018-05-23                          DB 접근자 수정, import문 정렬, 버튼들에 대한 동작 구현, 주석문 수정
+ *   김한동       1.0.0.   2018-05-23               DB 접근자 수정, import문 정렬, 버튼 이름 수정, 버튼들에 대한 동작 구현, 주석문 수정, 액션플레너 변수 수정
  *   
  * -----------------------------------
  */
@@ -80,19 +80,19 @@ public class LoginUI extends JFrame {
 		btnLogin.setBounds(279, 119, 105, 27);
 		contentPane.add(btnLogin);
 		
-		JButton btnNewButton = new JButton("ID/PW \uCC3E\uAE30");
-		btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		btnNewButton.setBackground(Color.DARK_GRAY);
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setBounds(253, 170, 131, 27);
-		contentPane.add(btnNewButton);
+		JButton findIDPWButton = new JButton("ID/PW \uCC3E\uAE30");
+		findIDPWButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		findIDPWButton.setBackground(Color.DARK_GRAY);
+		findIDPWButton.setForeground(Color.WHITE);
+		findIDPWButton.setBounds(253, 170, 131, 27);
+		contentPane.add(findIDPWButton);
 		
-		JButton button = new JButton("\uD68C\uC6D0\uAC00\uC785");
-		button.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-	    button.setBackground(Color.DARK_GRAY);
-		button.setForeground(Color.WHITE);
-		button.setBounds(100, 170, 131, 27);
-		contentPane.add(button);
+		JButton joinButton = new JButton("\uD68C\uC6D0\uAC00\uC785");
+		joinButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		joinButton.setBackground(Color.DARK_GRAY);
+		joinButton.setForeground(Color.WHITE);
+		joinButton.setBounds(100, 170, 131, 27);
+		contentPane.add(joinButton);
 		
 		JLabel lblId = new JLabel("ID");
 		lblId.setBounds(58, 70, 23, 24);
@@ -159,8 +159,8 @@ public class LoginUI extends JFrame {
 	});
 		
 		// 회원가입 버튼
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		joinButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				RegiUserUI showRegiUI = new RegiUserUI();
 				showRegiUI.setVisible(true);
 				dispose();
@@ -168,8 +168,8 @@ public class LoginUI extends JFrame {
 		});
 		
 		// ID, PW 찾기 버튼
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		findIDPWButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				FindUserUI showFindUserUI = new FindUserUI();
 				showFindUserUI.setVisible(true);
 				dispose();
