@@ -1,7 +1,26 @@
+/**
+ * title : LoginUI.java
+ * author : 김한동 (aggsae@gmail.com)
+ * version : 0.1.0.
+ * since : 2018 - 05 - 07
+ * brief : DB 연동 String
+ * -----------------------------------
+ * history
+ *   author  version     date                                                    brief
+ *   안동주       0.0.0.   2018-05-22                                                초안 작성
+ *   김한동       0.1.0.   2018-05-23     ID, PW 필드 바뀐 것 수정, ActionListener 작성, 추후 작성될 TodoList, IdError 항목 주석처리, DB 연결 문제 해결 진행 중
+ *   
+ *   
+ * -----------------------------------
+ */
 
+package se.smu;
+
+import se.smu.*;
+import java.sql.*;
+import java.util.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -24,22 +43,22 @@ import java.awt.Font;
 
 public class LoginUI extends JFrame {
 
+	Connection cOnn = null;
+	String sQl;
+	Statement st = null;
+	PreparedStatement pst = null;
+	ResultSet rs = null;
+	
+	Scanner in = new Scanner(System.in);
+	static String ID;
+	static String Password;
+	static String InputID;
+	static String InputPassword;
+	static Boolean pass = false;
+	
 	private JPanel contentPane;
 	private JPasswordField passwordField;
-	private JPasswordField passwordField_1;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginUI frame = new LoginUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JTextField idField;
 
 	public LoginUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,10 +76,6 @@ public class LoginUI extends JFrame {
 		
 		JButton btnLogin = new JButton("login");
 		btnLogin.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnLogin.setForeground(Color.WHITE);
 		
 		btnLogin.setBackground(Color.DARK_GRAY);
@@ -93,10 +108,10 @@ public class LoginUI extends JFrame {
 		lblPw.setBounds(58, 120, 32, 24);
 		contentPane.add(lblPw);
 		
-		passwordField_1 = new JPasswordField();
-		passwordField_1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		passwordField_1.setBounds(100, 70, 164, 24);
-		contentPane.add(passwordField_1);
+		idField = new JTextField();
+		idField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		idField.setBounds(100, 70, 164, 24);
+		contentPane.add(idField);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -107,5 +122,57 @@ public class LoginUI extends JFrame {
 		lblNewLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		lblNewLabel.setForeground(Color.WHITE);
 		panel.add(lblNewLabel);
+		
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					InputID = idField.getText();
+					InputPassword = new String(passwordField.getPassword());
+					
+					Class.forName(DBConn.forName);
+					cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+					
+					st = cOnn.createStatement();
+					sQl = "USERDB";
+					st.executeQuery(sQl);
+					rs = st.executeQuery("SELECT ID, PW FROM UserData WHERE ID = '" + InputID + "'");
+					
+					while(rs.next()) {
+						ID = rs.getString("ID");
+						Password = rs.getString("PW");
+					}
+					
+					if(InputID.equals(ID) && (InputPassword.equals(Password))) {
+						pass = true;
+						// new TodoList();
+						setVisible(false);
+					}
+					else {
+						pass = false;
+						//new IdError();
+					}
+					
+					System.out.println("Login" + pass);
+					
+					rs.close();
+					st.close();
+				} catch (ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					LoginUI frame = new LoginUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
