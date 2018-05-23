@@ -3,13 +3,13 @@
  * author : 김한동 (aggsae@gmail.com)
  * version : 1.0.0.
  * since : 2018 - 05 - 07
- * brief : DB 연동 String
+ * brief : Login UI 및 메소드 클래스
  * -----------------------------------
  * history
  *   author  version     date                                                    brief
  *   안동주       0.0.0.   2018-05-22                                                초안 작성
  *   김한동       0.1.0.   2018-05-23     ID, PW 필드 바뀐 것 수정, ActionListener 작성, 추후 작성될 TodoList, IdError 항목 주석처리, DB 연결 문제 해결 진행 중
- *   김한동       1.0.0.   2018-05-23                                         DB 접근자 수정, import문 정렬
+ *   김한동       1.0.0.   2018-05-23                          DB 접근자 수정, import문 정렬, 버튼들에 대한 동작 구현, 주석문 수정
  *   
  * -----------------------------------
  */
