@@ -1,37 +1,34 @@
+/**
+ * title : CheckAlarmUI.java
+ * author : 김한동 (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : 마감기한 안내 UI
+ * -----------------------------------
+ * history
+ *   author  version     date                          brief
+ *   안동주       0.0.0.   2018-05-22                      초안 작성
+ *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
+ * -----------------------------------
+ */
+
+package se.smu;
+
+import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.Font;
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.Color;
 import javax.swing.JButton;
 
 public class CheckAlarmUI extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CheckAlarmUI frame = new CheckAlarmUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public CheckAlarmUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -62,5 +59,18 @@ public class CheckAlarmUI extends JFrame {
 		label_1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		label_1.setBounds(139, 66, 137, 41);
 		contentPane.add(label_1);
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CheckAlarmUI frame = new CheckAlarmUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

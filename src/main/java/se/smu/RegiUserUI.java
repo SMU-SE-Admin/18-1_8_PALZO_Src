@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 2.1.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -223,7 +223,8 @@ public class RegiUserUI extends JFrame {
 					InputID = idTextField.getText();
 					InputPassword = new String(pwTextField.getPassword());
 					InputEmail = emailTextField.getText();
-				//ID필드, PW필드, Email필드 어느 한 군데가 공백이면 기능하지 않도록 구현
+
+					System.out.println(InputID + InputPassword + InputEmail);
 					UserDB userDB = new UserDB();
 					userDB.UserData(InputID, InputPassword, InputEmail);
 					//회원가입 성공 테스트

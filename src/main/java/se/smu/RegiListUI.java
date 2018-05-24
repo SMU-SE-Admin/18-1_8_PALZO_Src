@@ -1,12 +1,28 @@
+/**
+ * title : RegiListUI.java
+ * author : 김한동 (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : 투두 항목 등록 UI
+ * -----------------------------------
+ * history
+ *   author  version     date                          brief
+ *   안동주       0.0.0.   2018-05-22                      초안 작성
+ *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
+ * -----------------------------------
+ */
+
+package se.smu;
+
+import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
 import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
@@ -18,25 +34,6 @@ public class RegiListUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegiListUI frame = new RegiListUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public RegiListUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700,500);
@@ -223,5 +220,18 @@ public class RegiListUI extends JFrame {
 		comboBox_9.setBackground(Color.WHITE);
 		comboBox_9.setBounds(250, 160, 210, 30);
 		contentPane.add(comboBox_9);
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					RegiListUI frame = new RegiListUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

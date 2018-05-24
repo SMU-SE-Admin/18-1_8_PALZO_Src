@@ -1,39 +1,37 @@
+/**
+ * title : ReEnterRequest.java
+ * author : 김한동 (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : 빈 칸 에러 메세지 출력 UI
+ * -----------------------------------
+ * history
+ *   author  version     date                          brief
+ *   안동주       0.0.0.   2018-05-22                      초안 작성
+ *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
+ * -----------------------------------
+ */
+
+package se.smu;
+
+import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
 import javax.swing.JTextPane;
-import java.awt.Font;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 
 public class ReEnterRequest extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ReEnterRequest frame = new ReEnterRequest();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public ReEnterRequest() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
@@ -60,5 +58,17 @@ public class ReEnterRequest extends JFrame {
 		btnNewButton.setBounds(300, 180, 100, 40);
 		contentPane.add(btnNewButton);
 	}
-
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ReEnterRequest frame = new ReEnterRequest();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }

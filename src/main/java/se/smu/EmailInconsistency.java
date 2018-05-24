@@ -3,7 +3,7 @@
  * author : 김한동 (aggsae@gmail.com)
  * version : 1.0.0.
  * since : 2018 - 05 - 07
- * brief : 회원가입 UI 및 메소드 클래스
+ * brief : 중복 이메일 표시  UI
  * -----------------------------------
  * history
  *   author  version     date                          brief
@@ -21,7 +21,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;

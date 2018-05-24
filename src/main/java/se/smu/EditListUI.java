@@ -1,43 +1,41 @@
+/**
+ * title : EditListUI.java
+ * author : 김한동 (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : 투두 항목 수정 UI
+ * -----------------------------------
+ * history
+ *   author  version     date                          brief
+ *   안동주       0.0.0.   2018-05-22                      초안 작성
+ *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
+ * -----------------------------------
+ */
+
+package se.smu;
+
+import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.ScrollPane;
+import java.awt.Font;
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
 import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.ScrollPane;
+
 
 public class EditListUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EditListUI frame = new EditListUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public EditListUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700,500);
@@ -232,4 +230,18 @@ public class EditListUI extends JFrame {
 		button_1.setBounds(500, 280, 100, 30);
 		contentPane.add(button_1);
 	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					EditListUI frame = new EditListUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 }

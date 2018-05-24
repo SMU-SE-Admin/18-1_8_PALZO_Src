@@ -1,19 +1,34 @@
+/**
+ * title : RegiSubjectUI.java
+ * author : 김한동 (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : 과목 항목 등록 UI
+ * -----------------------------------
+ * history
+ *   author  version     date                          brief
+ *   안동주       0.0.0.   2018-05-22                      초안 작성
+ *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
+ * -----------------------------------
+ */
 
+package se.smu;
+
+import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.Color;
-import java.awt.Font;
 import javax.swing.JLabel;
 
 public class RegiSubjectUI extends JFrame {
@@ -27,25 +42,6 @@ public class RegiSubjectUI extends JFrame {
 	private JTextField textField_5;
 	private JTextField textField_6;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegiSubjectUI frame = new RegiSubjectUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public RegiSubjectUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 403);
@@ -191,6 +187,19 @@ public class RegiSubjectUI extends JFrame {
 		label.setFont(new Font("맑은 고딕", Font.PLAIN, 35));
 		panel.add(label);
 		
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					RegiSubjectUI frame = new RegiSubjectUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
 
