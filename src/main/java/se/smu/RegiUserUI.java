@@ -10,7 +10,7 @@
  *   안동주       0.0.0.   2018-05-22                                                        초안 작성
  *   김한동       1.0.0.   2018-05-23          패키지 및 주석문 추가 및 정렬, 버튼명 수정, 버튼들에 대한 기능 구현, Label로 해야하는 것을 TextField로 구현한 것 수정
  *   김한동       2.0.0.   2018-05-24                                     Join 기능이 되지 않는 것 수정, UI 없는 부분 주석으로 표시
-
+ *   김한동       2.1.0.   2018-05-24                                            checkid, checkemail 버튼 활성화
  * -----------------------------------
  */
 
@@ -179,7 +179,34 @@ public class RegiUserUI extends JFrame {
 		
 		checkEmailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
+					InputEmail = emailTextField.getText();
+					
+					Class.forName(DBConn.forName);
+					cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+					st = cOnn.createStatement();
+					sQl = "USE UserDB";
+					st.executeQuery(sQl);
+					rs = st.executeQuery("SELECT Email FROM UserData WHERE Email = '" + InputEmail + "'");
+					
+					while(rs.next()) {
+						Email = rs.getString("Email");
+					}
+					
+					if(InputEmail.equals(Email)) {
+						emailRepeat = true;
+						EmailAddressOverlap emailOverLap = new EmailAddressOverlap();
+						emailOverLap.setVisible(true);
+						dispose();
+					}
+					else {
+						emailRepeat = false;
+						System.out.println("중복되지 않은 이메일입니다.");
+						//메세지 UI 구축 후 추가
+					}
+				} catch (ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -196,7 +223,7 @@ public class RegiUserUI extends JFrame {
 					InputID = idTextField.getText();
 					InputPassword = new String(pwTextField.getPassword());
 					InputEmail = emailTextField.getText();
-
+				//ID필드, PW필드, Email필드 어느 한 군데가 공백이면 기능하지 않도록 구현
 					UserDB userDB = new UserDB();
 					userDB.UserData(InputID, InputPassword, InputEmail);
 					//회원가입 성공 테스트
