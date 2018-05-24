@@ -1,43 +1,62 @@
+/**
+ * title : RegiUserUI.java
+ * author : ±èÇÑµ¿ (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : È¸¿ø°¡ÀÔ UI ¹× ¸Þ¼Òµå Å¬·¡½º
+ * -----------------------------------
+ * history
+ *   author  version     date                                                            brief
+ *   ¾Èµ¿ÁÖ       0.0.0.   2018-05-22                                                        ÃÊ¾È ÀÛ¼º
+ *   ±èÇÑµ¿       1.0.0.   2018-05-23          ÆÐÅ°Áö ¹× ÁÖ¼®¹® Ãß°¡ ¹× Á¤·Ä, ¹öÆ°¸í ¼öÁ¤, ¹öÆ°µé¿¡ ´ëÇÑ ±â´É ±¸Çö, Label·Î ÇØ¾ßÇÏ´Â °ÍÀ» TextField·Î ±¸ÇöÇÑ °Í ¼öÁ¤
+ *   ±èÇÑµ¿       2.0.0.   2018-05-24                                     Join ±â´ÉÀÌ µÇÁö ¾Ê´Â °Í ¼öÁ¤, UI ¾ø´Â ºÎºÐ ÁÖ¼®À¸·Î Ç¥½Ã
+
+ * -----------------------------------
+ */
+
+package se.smu;
+
+import se.smu.*;
+import java.sql.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
-import java.awt.Color;
 import javax.swing.JButton;
-import java.awt.Font;
+
 
 public class RegiUserUI extends JFrame {
 
+	Connection cOnn = null;
+	String sQl;
+	Statement st = null;
+	PreparedStatement pst = null;
+	ResultSet rs = null;
+	
+	static String ID;
+	static String Password;
+	static String Email;
+	static String InputID;
+	static String InputPassword;
+	static String InputEmail;
+	static Boolean idRepeat = false;
+	static Boolean emailRepeat = false;
+	
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField idTextField;
+	private JPasswordField pwTextField;
+	private JTextField emailTextField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegiUserUI frame = new RegiUserUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public RegiUserUI() {
 		
 		JTextPane textPane = new JTextPane();
@@ -51,69 +70,69 @@ public class RegiUserUI extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		JTextPane txtpnEail = new JTextPane();
-		txtpnEail.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		txtpnEail.setText("Email");
-		txtpnEail.setBounds(56, 171, 46, 33);
-		contentPane.add(txtpnEail);
+		JLabel lbEail = new JLabel();
+		lbEail.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		lbEail.setText("Email");
+		lbEail.setBounds(56, 171, 46, 33);
+		contentPane.add(lbEail);
 		
-		JTextPane txtpnPw = new JTextPane();
-		txtpnPw.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		txtpnPw.setText("  PW");
-		txtpnPw.setBounds(56, 136, 46, 23);
-		contentPane.add(txtpnPw);
+		JLabel lbPw = new JLabel();
+		lbPw.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		lbPw.setText("  PW");
+		lbPw.setBounds(56, 136, 46, 23);
+		contentPane.add(lbPw);
 		
-		JTextPane txtpnId = new JTextPane();
-		txtpnId.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		txtpnId.setText("ID");
-		txtpnId.setBounds(73, 103, 46, 33);
-		contentPane.add(txtpnId);
+		JLabel lbId = new JLabel();
+		lbId.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		lbId.setText("ID");
+		lbId.setBounds(73, 103, 46, 33);
+		contentPane.add(lbId);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField.setBounds(133, 103, 186, 24);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		idTextField = new JTextField();
+		idTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		idTextField.setBounds(133, 103, 186, 24);
+		contentPane.add(idTextField);
+		idTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField_1.setColumns(10);
-		textField_1.setBounds(133, 135, 186, 24);
-		contentPane.add(textField_1);
+		pwTextField = new JPasswordField();
+		pwTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		pwTextField.setColumns(10);
+		pwTextField.setBounds(133, 135, 186, 24);
+		contentPane.add(pwTextField);
 		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField_2.setColumns(10);
-		textField_2.setBounds(133, 173, 186, 24);
-		contentPane.add(textField_2);
+		emailTextField = new JTextField();
+		emailTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		emailTextField.setColumns(10);
+		emailTextField.setBounds(133, 173, 186, 24);
+		contentPane.add(emailTextField);
 		
-		JButton btnNewButton = new JButton("\uC911\uBCF5\uD655\uC778");
-		btnNewButton.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setBackground(Color.DARK_GRAY);
-		btnNewButton.setBounds(333, 103, 105, 27);
-		contentPane.add(btnNewButton);
+		JButton checkIdButton = new JButton("\uC911\uBCF5\uD655\uC778");
+		checkIdButton.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		checkIdButton.setForeground(Color.WHITE);
+		checkIdButton.setBackground(Color.DARK_GRAY);
+		checkIdButton.setBounds(333, 103, 105, 27);
+		contentPane.add(checkIdButton);
 		
-		JButton button = new JButton("\uC911\uBCF5\uD655\uC778");
-		button.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		button.setForeground(Color.WHITE);
-		button.setBackground(Color.DARK_GRAY);
-		button.setBounds(333, 171, 105, 27);
-		contentPane.add(button);
+		JButton checkEmailButton = new JButton("\uC911\uBCF5\uD655\uC778");
+		checkEmailButton.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		checkEmailButton.setForeground(Color.WHITE);
+		checkEmailButton.setBackground(Color.DARK_GRAY);
+		checkEmailButton.setBounds(333, 171, 105, 27);
+		contentPane.add(checkEmailButton);
 		
-		JButton button_1 = new JButton("\uD68C\uC6D0\uAC00\uC785");
-		button_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		button_1.setForeground(Color.WHITE);
-		button_1.setBackground(Color.DARK_GRAY);
-		button_1.setBounds(104, 209, 105, 27);
-		contentPane.add(button_1);
+		JButton joinButton = new JButton("\uD68C\uC6D0\uAC00\uC785");
+		joinButton.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		joinButton.setForeground(Color.WHITE);
+		joinButton.setBackground(Color.DARK_GRAY);
+		joinButton.setBounds(104, 209, 105, 27);
+		contentPane.add(joinButton);
 		
-		JButton button_2 = new JButton("\uCDE8\uC18C");
-		button_2.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		button_2.setForeground(Color.WHITE);
-		button_2.setBackground(Color.DARK_GRAY);
-		button_2.setBounds(250, 209, 105, 27);
-		contentPane.add(button_2);
+		JButton backToLogin = new JButton("\uCDE8\uC18C");
+		backToLogin.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		backToLogin.setForeground(Color.WHITE);
+		backToLogin.setBackground(Color.DARK_GRAY);
+		backToLogin.setBounds(250, 209, 105, 27);
+		contentPane.add(backToLogin);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -124,6 +143,91 @@ public class RegiUserUI extends JFrame {
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		panel.add(label);
-	}
+		
+		checkIdButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {	
+				try {
+					InputID = idTextField.getText();
+					
+					Class.forName(DBConn.forName);
+					cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+					st = cOnn.createStatement();
+					sQl = "USE UserDB";
+					st.executeQuery(sQl);
+					rs = st.executeQuery("SELECT ID FROM UserData WHERE ID = '" + InputID + "'");
+					
+					while(rs.next()) {
+						ID = rs.getString("ID");
+					}
+					
+					if(InputID.equals(ID)) {
+						idRepeat = true;
+						IdOverlap idOverLap = new IdOverlap();
+						idOverLap.setVisible(true);
+						dispose();
+					}
+					else {
+						idRepeat = false;
+						System.out.println("Áßº¹µÇÁö ¾ÊÀº ¾ÆÀÌµðÀÔ´Ï´Ù.");
+						//¸Þ¼¼Áö UI ±¸Ãà ÈÄ Ãß°¡
+					}
+				} catch (ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		checkEmailButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		joinButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/* Áßº¹È®ÀÎÀ» ´©¸£Áö ¾ÊÀ» °æ¿ì ¿¡·¯ ¸Þ¼¼Áö Ãâ·Â
+				if(idRepeat == false) {
+					IdOverlap idOverLap = new IdOverlap();
+					idOverLap.setVisible(true);
+					dispose();
+				}
+				
+				else { */
+					InputID = idTextField.getText();
+					InputPassword = new String(pwTextField.getPassword());
+					InputEmail = emailTextField.getText();
 
+					UserDB userDB = new UserDB();
+					userDB.UserData(InputID, InputPassword, InputEmail);
+					//È¸¿ø°¡ÀÔ ¼º°ø Å×½ºÆ®
+					//System.out.println("Join Success");
+				
+					LoginUI backToLogin = new LoginUI();
+					backToLogin.setVisible(true);
+					dispose();
+				//}
+			}
+		});
+		
+		backToLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoginUI backToLogin = new LoginUI();
+				backToLogin.setVisible(true);
+				dispose();
+			}
+		});
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					RegiUserUI frame = new RegiUserUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }
