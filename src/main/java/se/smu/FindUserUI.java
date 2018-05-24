@@ -1,12 +1,28 @@
+/**
+ * title : FindUserUI.java
+ * author : ±Ë«—µø (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : SubjectDB ≈¨∑°Ω∫
+ * -----------------------------------
+ * history
+ *   author  version     date                              brief
+ *   æ»µø¡÷        0.0.0.   2018-05-22                         √ æ» ¿€º∫
+ *   ±Ë«—µø        1.0.0.   2018-05-24            Email «•Ω√ªÛ¿⁄∞° ≈ÿΩ∫∆Æ« µÂ∑Œ µ«æÓ¿÷¥¬ ∞Õ ºˆ¡§ 
+ * -----------------------------------
+ */
+
+package se.smu;
+
+import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
-import java.awt.Color;
-import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,25 +32,6 @@ public class FindUserUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FindUserUI frame = new FindUserUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public FindUserUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
@@ -44,11 +41,11 @@ public class FindUserUI extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		JTextPane txtpnEmail = new JTextPane();
-		txtpnEmail.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
-		txtpnEmail.setText("Email");
-		txtpnEmail.setBounds(85, 100, 60, 30);
-		contentPane.add(txtpnEmail);
+		JLabel lbEmail = new JLabel();
+		lbEmail.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
+		lbEmail.setText("Email");
+		lbEmail.setBounds(85, 100, 60, 30);
+		contentPane.add(lbEmail);
 		
 		textField = new JTextField();
 		textField.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
@@ -79,6 +76,19 @@ public class FindUserUI extends JFrame {
 		lblIdpw.setForeground(Color.WHITE);
 		lblIdpw.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 20));
 		panel.add(lblIdpw);
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					FindUserUI frame = new FindUserUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
 
