@@ -1,17 +1,32 @@
+/**
+ * title : MainUI.java
+ * author : 김한동 (aggsae@gmail.com)
+ * version : 1.0.0.
+ * since : 2018 - 05 - 07
+ * brief : Main UI 및 메소드 클래스
+ * -----------------------------------
+ * history
+ *   author  version     date                                                    brief
+ *   안동주       0.0.0.   2018-05-25                                                초안 작성
+ *   김한동       1.0.0.   2018-05-25                                            패키지화 및 주석 추가
+ * -----------------------------------
+ */
+
+package se.smu;
+
+import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.Checkbox;
+import java.awt.Font;
+import java.awt.Scrollbar;
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import java.awt.Color;
-import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
-import java.awt.Scrollbar;
-import java.awt.Checkbox;
-import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextPane;
@@ -35,7 +50,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.JMenu;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButtonMenuItem;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
+//import com.jgoodies.forms.factories.DefaultComponentFactory;
 import javax.swing.JSplitPane;
 
 public class MainUI extends JFrame {
@@ -45,25 +60,6 @@ public class MainUI extends JFrame {
 	private JTable table_1;
 	private JTable table_2;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainUI frame = new MainUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public MainUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 749, 607);
@@ -184,4 +180,18 @@ public class MainUI extends JFrame {
 		
 		table_2.setRowHeight(60);
 	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainUI frame = new MainUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 }
