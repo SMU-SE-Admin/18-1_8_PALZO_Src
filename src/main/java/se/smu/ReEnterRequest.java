@@ -1,7 +1,7 @@
 /**
  * title : ReEnterRequest.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 2.0.0.
  * since : 2018 - 05 - 07
  * brief : 빈 칸 에러 메세지 출력 UI
  * -----------------------------------
@@ -9,6 +9,7 @@
  *   author  version     date                          brief
  *   안동주       0.0.0.   2018-05-22                      초안 작성
  *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
+ *   김한동       2.0.0.   2018-05-25                    닫기버튼 활성화
  * -----------------------------------
  */
 
@@ -47,16 +48,18 @@ public class ReEnterRequest extends JFrame {
 		textPane.setBounds(114, 85, 268, 54);
 		contentPane.add(textPane);
 		
-		JButton btnNewButton = new JButton("\uB2EB\uAE30");
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton closeWindowButton = new JButton("\uB2EB\uAE30");
+		closeWindowButton.setForeground(Color.WHITE);
+		closeWindowButton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+		closeWindowButton.setBackground(Color.DARK_GRAY);
+		closeWindowButton.setBounds(300, 180, 100, 40);
+		contentPane.add(closeWindowButton);
+		
+		closeWindowButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				dispose();
 			}
 		});
-		btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-		btnNewButton.setBackground(Color.DARK_GRAY);
-		btnNewButton.setBounds(300, 180, 100, 40);
-		contentPane.add(btnNewButton);
 	}
 	
 	public static void main(String[] args) {
