@@ -1,7 +1,7 @@
 /**
  * title : FindUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.1.0.
+ * version : 2.1.0.
  * since : 2018 - 05 - 07
  * brief : ID, PW 찾기 UI 및 메소드 클래스
  * -----------------------------------
@@ -11,6 +11,7 @@
  *   김한동        1.0.0.   2018-05-24            Email 표시상자가 텍스트필드로 되어있는 것 수정 
  *   김한동        1.1.0.   2018-05-24                     확인, 닫기 버튼 활성화
  *   김한동        2.0.0.   2018-05-25         ID, 비밀번호 찾기 완료 후 로그인 UI로 돌아오는 기능 추가
+ *   김한동        2.1.0.   2018-05-25					의미없는 DB 연결 변수 삭제
  * -----------------------------------
  */
 
@@ -35,14 +36,7 @@ import javax.swing.JLabel;
 //import javax.mail.internet.*;
 
 public class FindUserUI extends JFrame {
-	
-	String sQl;
-	String mail_sQl = null;
-	Connection cOnn = null;
-	Statement st = null;
-	PreparedStatement pst = null;
-	ResultSet rs = null;
-	
+
 	static String ID;
 	static String Password;
 	static String Email;
