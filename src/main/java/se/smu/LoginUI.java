@@ -1,7 +1,7 @@
 /**
  * title : LoginUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.0.0.
+ * version : 2.1.0.
  * since : 2018 - 05 - 07
  * brief : Login UI 및 메소드 클래스
  * -----------------------------------
@@ -12,7 +12,7 @@
  *   김한동       1.0.0.   2018-05-23               DB 접근자 수정, import문 정렬, 버튼 이름 수정, 버튼들에 대한 동작 구현, 주석문 수정, 액션플레너 변수 수정
  *   김한동       1.0.1.   2018-05-23                                             미사용 DB 변수 삭제
  *   김한동       2.0.0.   2018-05-24                                          DB 및 연결자 변경에 따른 수정
- *   
+ *   김한동       2.1.0.   2018-05-25                                      DB 연결자를 전역변수에서 지역변수로 변경
  * -----------------------------------
  */
 
@@ -44,12 +44,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 
 public class LoginUI extends JFrame {
-	//DB 접속 변수 선언
-	String sQl;
-	Connection cOnn = null;
-	Statement st = null;
-	ResultSet rs = null;
-
+	
 	static String ID;
 	static String Password;
 	static String InputID;
@@ -123,6 +118,11 @@ public class LoginUI extends JFrame {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+						String sQl;
+						Connection cOnn = null;
+						Statement st = null;
+						ResultSet rs = null;
+					
 						InputID = idField.getText();
 						InputPassword = new String(passwordField.getPassword());
 					
@@ -152,7 +152,7 @@ public class LoginUI extends JFrame {
 					dispose();
 				}
 					
-				System.out.println("Login" + pass);
+				//System.out.println("Login" + pass);
 					
 				rs.close();
 				st.close();
