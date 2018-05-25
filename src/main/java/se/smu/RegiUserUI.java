@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.1.0.
+ * version : 2.1.1.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -11,6 +11,7 @@
  *   김한동       1.0.0.   2018-05-23          패키지 및 주석문 추가 및 정렬, 버튼명 수정, 버튼들에 대한 기능 구현, Label로 해야하는 것을 TextField로 구현한 것 수정
  *   김한동       2.0.0.   2018-05-24                                     Join 기능이 되지 않는 것 수정, UI 없는 부분 주석으로 표시
  *   김한동       2.1.0.   2018-05-24                                            checkid, checkemail 버튼 활성화
+ *   김한동       2.1.1.   2018-05-25                                                 알림 UI 추가 주석 메세지 수정
  * -----------------------------------
  */
 
@@ -168,7 +169,7 @@ public class RegiUserUI extends JFrame {
 					}
 					else {
 						idRepeat = false;
-						System.out.println("중복되지 않은 아이디입니다.");
+						System.out.println("사용가능한 아이디입니다.");
 						//메세지 UI 구축 후 추가
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
@@ -201,7 +202,7 @@ public class RegiUserUI extends JFrame {
 					}
 					else {
 						emailRepeat = false;
-						System.out.println("중복되지 않은 이메일입니다.");
+						System.out.println("사용가능한 이메일입니다.");
 						//메세지 UI 구축 후 추가
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
