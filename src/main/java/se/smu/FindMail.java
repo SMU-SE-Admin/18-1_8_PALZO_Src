@@ -1,13 +1,14 @@
 /**
  * title : FindMail.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 0.0.0.
+ * version : 1.0.0.
  * since : 2018 - 05 - 07
- * brief : 회원가입 UI 및 메소드 클래스
+ * brief : ID, PW 이메일 전송 클래스
  * -----------------------------------
  * history
  *   author  version     date                              brief
  *   김한동       0.0.0.   2018-05-24                          초안 작성
+ *   김한동       1.0.0.   2018-05-25            smtp.gmail.com 포트넘버 수정, 이메일 메세지 수정
  * -----------------------------------
  */
 
@@ -59,12 +60,14 @@ public class FindMail {
 		final String adminPW = "Gksehd03021";
 		
 		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enalbe", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mailsmtp.port", "587");
+		props.put("mailsmtp.port", "465");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.ssl.enable", "true");
+		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		//props.put("mail.smtp.starttls.enalbe", "true");
 		
-		Session session = Session.getInstance(props,
+		Session session = Session.getDefaultInstance(props,
 				new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(adminEmail, adminPW);
@@ -72,13 +75,16 @@ public class FindMail {
 		});
 		
 		try {
-			Message message = new MimeMessage(session);
+			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("Palzo"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.InputEmail));
-			message.setSubject("[Palzo] ID / PW 안내");
-			message.setText("ID : " + ID + "\nPW : " + Password);
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress/*.parse*/(this.InputEmail));
+			message.setSubject("[Palzo] Todolist ID / PW 찾기 안내");
+			message.setText("안녕하세요! " + ID + "님\n" + "요청하신 ID/PW 찾기 결과입니다.\n"
+							+ "ID : " + ID + "\nPW : " + Password);
 			
 			Transport.send(message);
+			
+			//System.out.println("Mail Sending Success");
 		} catch(MessagingException e) {
 			throw new RuntimeException(e);
 		}

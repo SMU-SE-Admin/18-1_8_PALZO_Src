@@ -10,6 +10,7 @@
  *   안동주        0.0.0.   2018-05-22                          초안 작성
  *   김한동        1.0.0.   2018-05-24            Email 표시상자가 텍스트필드로 되어있는 것 수정 
  *   김한동        1.1.0.   2018-05-24                     확인, 닫기 버튼 활성화
+ *   김한동        2.0.0.   2018-05-25         ID, 비밀번호 찾기 완료 후 로그인 UI로 돌아오는 기능 추가
  * -----------------------------------
  */
 
@@ -99,7 +100,10 @@ public class FindUserUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				InputEmail = textField.getText();
 				new FindMail(InputEmail);
-				setVisible(false);
+				//"메일이 발송되었습니다." UI 추가될 경우 추가
+				LoginUI endFind = new LoginUI();
+				endFind.setVisible(true);
+				dispose();
 			}
 		});
 		
