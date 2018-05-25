@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.1.1.
+ * version : 2.1.2.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -12,6 +12,7 @@
  *   김한동       2.0.0.   2018-05-24                                     Join 기능이 되지 않는 것 수정, UI 없는 부분 주석으로 표시
  *   김한동       2.1.0.   2018-05-24                                            checkid, checkemail 버튼 활성화
  *   김한동       2.1.1.   2018-05-25                                                 알림 UI 추가 주석 메세지 수정
+ *   김한동       2.1.2.   2018-05-25                                           DB 연결 변수를 전역변수에서 지역변수로 변경
  * -----------------------------------
  */
 
@@ -35,14 +36,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-
 public class RegiUserUI extends JFrame {
-
-	Connection cOnn = null;
-	String sQl;
-	Statement st = null;
-	PreparedStatement pst = null;
-	ResultSet rs = null;
 	
 	static String ID;
 	static String Password;
@@ -148,6 +142,13 @@ public class RegiUserUI extends JFrame {
 		checkIdButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 				try {
+					
+					Connection cOnn = null;
+					String sQl;
+					Statement st = null;
+					PreparedStatement pst = null;
+					ResultSet rs = null;
+					
 					InputID = idTextField.getText();
 					
 					Class.forName(DBConn.forName);
@@ -181,6 +182,13 @@ public class RegiUserUI extends JFrame {
 		checkEmailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					
+					Connection cOnn = null;
+					String sQl;
+					Statement st = null;
+					PreparedStatement pst = null;
+					ResultSet rs = null;
+					
 					InputEmail = emailTextField.getText();
 					
 					Class.forName(DBConn.forName);
