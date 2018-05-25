@@ -118,14 +118,16 @@ public class MainUI extends JFrame {
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"\uC911\uC694\uB3C4\uC21C \uC815\uB82C", "\uC2E4\uC81C\uB9C8\uAC10\uC77C \uC815\uB82C", "\uB9C8\uAC10\uAE30\uD55C \uC815\uB82C"}));
 		comboBox_1.setForeground(Color.BLACK);
 		comboBox_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		table_1 = new JTable();
+		
+		
+		table_1 = new JTable(); //ToDoList ÁÂÃø
+		table_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		table_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 18));
-		table_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "To-Do List", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		table_1.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"\uC18C\uD504\uD2B8\uC6E8\uC5B4\uACF5\uD559"},
+				{"To-DO List"},
 				{"\uB370\uC774\uD130\uBCA0\uC774\uC2A4"},
-				{null},
+				{"\uC18C\uD504\uD2B8\uC6E8\uC5B4\uACF5\uD559"},
 				{null},
 				{null},
 				{null},
@@ -143,9 +145,10 @@ public class MainUI extends JFrame {
 		});
 		table_1.getColumnModel().getColumn(0).setPreferredWidth(116);
 		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_1.setBounds(14, 79, 90, 471);
+		table_1.setBounds(14, 90, 90, 460);
 		table_1.setRowHeight(40);
 		contentPane.add(table_1);
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(108, 79, 623, 433);
