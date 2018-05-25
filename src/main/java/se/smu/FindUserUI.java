@@ -1,7 +1,7 @@
 /**
  * title : FindUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.1.0.
+ * version : 3.0.0.
  * since : 2018 - 05 - 07
  * brief : ID, PW 찾기 UI 및 메소드 클래스
  * -----------------------------------
@@ -12,6 +12,7 @@
  *   김한동        1.1.0.   2018-05-24                     확인, 닫기 버튼 활성화
  *   김한동        2.0.0.   2018-05-25         ID, 비밀번호 찾기 완료 후 로그인 UI로 돌아오는 기능 추가
  *   김한동        2.1.0.   2018-05-25					의미없는 DB 연결 변수 삭제
+ *   김한동        3.0.0.   2018-05-25                   NULL 입력에 대한 예외처리
  * -----------------------------------
  */
 
@@ -93,11 +94,18 @@ public class FindUserUI extends JFrame {
 		findButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				InputEmail = textField.getText();
-				new FindMail(InputEmail);
-				//"메일이 발송되었습니다." UI 추가될 경우 추가
-				LoginUI endFind = new LoginUI();
-				endFind.setVisible(true);
-				dispose();
+				if(InputEmail.length() == 0) {
+					ReEnterRequest noNull = new ReEnterRequest();
+					noNull.setVisible(true);
+				}
+				
+				else {
+					new FindMail(InputEmail);
+					//"메일이 발송되었습니다." UI 추가될 경우 추가
+					LoginUI endFind = new LoginUI();
+					endFind.setVisible(true);
+					dispose();
+				}
 			}
 		});
 		
