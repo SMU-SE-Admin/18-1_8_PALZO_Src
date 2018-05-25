@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.1.2.
+ * version : 3.0.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -13,6 +13,7 @@
  *   김한동       2.1.0.   2018-05-24                                            checkid, checkemail 버튼 활성화
  *   김한동       2.1.1.   2018-05-25                                                 알림 UI 추가 주석 메세지 수정
  *   김한동       2.1.2.   2018-05-25                                           DB 연결 변수를 전역변수에서 지역변수로 변경
+ *   김한동       3.0.0.   2018-05-25                                   NULL 입력값에 대한 예외처리, 중복확인 필요 UI 주석 메세지 추가
  * -----------------------------------
  */
 
@@ -44,8 +45,8 @@ public class RegiUserUI extends JFrame {
 	static String InputID;
 	static String InputPassword;
 	static String InputEmail;
-	static Boolean idRepeat = false;
-	static Boolean emailRepeat = false;
+	static Boolean pushIdNull = false;
+	static Boolean pushEmailNull = false;
 	
 	private JPanel contentPane;
 	private JTextField idTextField;
@@ -146,7 +147,6 @@ public class RegiUserUI extends JFrame {
 					Connection cOnn = null;
 					String sQl;
 					Statement st = null;
-					PreparedStatement pst = null;
 					ResultSet rs = null;
 					
 					InputID = idTextField.getText();
@@ -158,20 +158,26 @@ public class RegiUserUI extends JFrame {
 					st.executeQuery(sQl);
 					rs = st.executeQuery("SELECT ID FROM UserData WHERE ID = '" + InputID + "'");
 					
-					while(rs.next()) {
+					while(rs.next())
 						ID = rs.getString("ID");
+					
+					if(InputID.length() == 0) {
+						pushIdNull = true;
+						ReEnterRequest noNull = new ReEnterRequest();
+						noNull.setVisible(true);
 					}
 					
-					if(InputID.equals(ID)) {
-						idRepeat = true;
-						IdOverlap idOverLap = new IdOverlap();
-						idOverLap.setVisible(true);
-						dispose();
-					}
 					else {
-						idRepeat = false;
-						System.out.println("사용가능한 아이디입니다.");
-						//메세지 UI 구축 후 추가
+						pushIdNull = true;
+						if(InputID.equals(ID)) {
+							IdOverlap idOverLap = new IdOverlap();
+							idOverLap.setVisible(true);
+							dispose();
+						}
+						else {
+							System.out.println("사용가능한 아이디입니다.");
+							//메세지 UI 구축 후 추가
+						}
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
 					e1.printStackTrace();
@@ -186,7 +192,6 @@ public class RegiUserUI extends JFrame {
 					Connection cOnn = null;
 					String sQl;
 					Statement st = null;
-					PreparedStatement pst = null;
 					ResultSet rs = null;
 					
 					InputEmail = emailTextField.getText();
@@ -198,20 +203,26 @@ public class RegiUserUI extends JFrame {
 					st.executeQuery(sQl);
 					rs = st.executeQuery("SELECT Email FROM UserData WHERE Email = '" + InputEmail + "'");
 					
-					while(rs.next()) {
+					while(rs.next())
 						Email = rs.getString("Email");
+					
+					if(InputEmail.length() == 0) {
+						pushEmailNull = true;
+						ReEnterRequest noNull = new ReEnterRequest();
+						noNull.setVisible(true);
 					}
 					
-					if(InputEmail.equals(Email)) {
-						emailRepeat = true;
-						EmailAddressOverlap emailOverLap = new EmailAddressOverlap();
-						emailOverLap.setVisible(true);
-						dispose();
-					}
 					else {
-						emailRepeat = false;
-						System.out.println("사용가능한 이메일입니다.");
-						//메세지 UI 구축 후 추가
+						pushEmailNull = true;
+						if(InputEmail.equals(Email)) {
+							EmailAddressOverlap emailOverLap = new EmailAddressOverlap();
+							emailOverLap.setVisible(true);
+							dispose();
+						}
+						else {
+							System.out.println("사용가능한 이메일입니다.");
+							//메세지 UI 구축 후 추가
+						}
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
 					e1.printStackTrace();
@@ -221,28 +232,31 @@ public class RegiUserUI extends JFrame {
 		
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/* 중복확인을 누르지 않을 경우 에러 메세지 출력
-				if(idRepeat == false) {
-					IdOverlap idOverLap = new IdOverlap();
-					idOverLap.setVisible(true);
-					dispose();
-				}
+				if(pushIdNull | pushEmailNull == false)
+					System.out.println("중복확인을 해주십시오.");
+					// 중복확인 UI 구현 후 추가
 				
-				else { */
-					InputID = idTextField.getText();
-					InputPassword = new String(pwTextField.getPassword());
-					InputEmail = emailTextField.getText();
+				else {
+					if(InputID.length() == 0) {
+						ReEnterRequest noNull = new ReEnterRequest();
+						noNull.setVisible(true);
+					}
+					else {
+						InputID = idTextField.getText();
+						InputPassword = new String(pwTextField.getPassword());
+						InputEmail = emailTextField.getText();
 
-					System.out.println(InputID + InputPassword + InputEmail);
-					UserDB userDB = new UserDB();
-					userDB.UserData(InputID, InputPassword, InputEmail);
-					//회원가입 성공 테스트
-					//System.out.println("Join Success");
+						System.out.println(InputID + InputPassword + InputEmail);
+						UserDB userDB = new UserDB();
+						userDB.UserData(InputID, InputPassword, InputEmail);
+						//회원가입 성공 테스트
+						//System.out.println("Join Success");
 				
-					LoginUI backToLogin = new LoginUI();
-					backToLogin.setVisible(true);
-					dispose();
-				//}
+						LoginUI backToLogin = new LoginUI();
+						backToLogin.setVisible(true);
+						dispose();
+					}
+				}
 			}
 		});
 		
