@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 4.0.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -14,6 +14,7 @@
  *   김한동       2.1.1.   2018-05-25                                                 알림 UI 추가 주석 메세지 수정
  *   김한동       2.1.2.   2018-05-25                                           DB 연결 변수를 전역변수에서 지역변수로 변경
  *   김한동       3.0.0.   2018-05-25                                   NULL 입력값에 대한 예외처리, 중복확인 필요 UI 주석 메세지 추가
+ *   김한동       4.0.0.   2018-05-26                                           join 기능에서 Email이 공백일 때 조건 추가
  * -----------------------------------
  */
 
@@ -237,7 +238,7 @@ public class RegiUserUI extends JFrame {
 					// 중복확인 UI 구현 후 추가
 				
 				else {
-					if(InputID.length() == 0) {
+					if(InputID.length() == 0 | InputEmail.length() == 0) {
 						ReEnterRequest noNull = new ReEnterRequest();
 						noNull.setVisible(true);
 					}
