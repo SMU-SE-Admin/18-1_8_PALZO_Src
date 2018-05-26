@@ -1,7 +1,7 @@
 /**
  * title : MainUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 2.0.0.
  * since : 2018 - 05 - 07
  * brief : Main UI 및 메소드 클래스
  * -----------------------------------
@@ -9,6 +9,8 @@
  *   author  version     date                                                    brief
  *   안동주       0.0.0.   2018-05-25                                                초안 작성
  *   김한동       1.0.0.   2018-05-25                                            패키지화 및 주석 추가
+ *   안동주       1.1.0.   2018-05-25                                              MainUI 수정
+ *   김한동       2.0.0.   2018-05-26                                          과목등록 버튼 기능 활성화
  * -----------------------------------
  */
 
@@ -20,6 +22,8 @@ import java.awt.EventQueue;
 import java.awt.Checkbox;
 import java.awt.Font;
 import java.awt.Scrollbar;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -69,9 +73,9 @@ public class MainUI extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		JButton button = new JButton("+");
-		button.setBounds(41, 523, 41, 27);
-		contentPane.add(button);
+		JButton regiSubButton = new JButton("+");
+		regiSubButton.setBounds(41, 523, 41, 27);
+		contentPane.add(regiSubButton);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setBackground(Color.DARK_GRAY);
@@ -182,6 +186,14 @@ public class MainUI extends JFrame {
 		table_2.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		table_2.setRowHeight(60);
+		
+		regiSubButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegiSubjectUI regiSubUI = new RegiSubjectUI();
+				regiSubUI.setVisible(true);
+				dispose();
+			}
+		});
 	}
 	
 	public static void main(String[] args) {
