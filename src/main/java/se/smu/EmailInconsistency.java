@@ -1,7 +1,7 @@
 /**
  * title : EmailInconsistency.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 2.0.0.
  * since : 2018 - 05 - 07
  * brief : 중복 이메일 표시  UI
  * -----------------------------------
@@ -9,6 +9,7 @@
  *   author  version     date                          brief
  *   안동주       0.0.0.   2018-05-22                      초안 작성
  *   김한동       1.0.0.   2018-05-24                 주석 작성, 닫기 버튼 활성화
+ *   김한동       2.0.0.   2018-05-26                 Textpane을 JLabel로 수정
  * -----------------------------------
  */
 
@@ -25,7 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import javax.swing.JTextPane;
+import javax.swing.JLabel;
 
 public class EmailInconsistency extends JFrame {
 
@@ -48,7 +49,7 @@ public class EmailInconsistency extends JFrame {
 		backToFindUser.setBounds(300, 180, 100, 40);
 		contentPane.add(backToFindUser);
 		
-		JTextPane txtpnEmailaddress = new JTextPane();
+		JLabel txtpnEmailaddress = new JLabel();
 		txtpnEmailaddress.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		txtpnEmailaddress.setText("\uC77C\uCE58\uD558\uB294 Email\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uB2E4\uC2DC \uC785\uB825\uD574 \uC8FC\uC2ED\uC2DC\uC624");
 		txtpnEmailaddress.setBounds(110, 70, 240, 80);

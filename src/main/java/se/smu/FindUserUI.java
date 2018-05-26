@@ -1,7 +1,7 @@
 /**
  * title : FindUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 3.1.0.
  * since : 2018 - 05 - 07
  * brief : ID, PW 찾기 UI 및 메소드 클래스
  * -----------------------------------
@@ -13,6 +13,7 @@
  *   김한동        2.0.0.   2018-05-25         ID, 비밀번호 찾기 완료 후 로그인 UI로 돌아오는 기능 추가
  *   김한동        2.1.0.   2018-05-25					의미없는 DB 연결 변수 삭제
  *   김한동        3.0.0.   2018-05-25                   NULL 입력에 대한 예외처리
+ *   김한동        3.1.0.   2018-05-26		이메일 발송 완료 UI 추가, 이메일이 없을 경우 에러 메세지 UI 추가
  * -----------------------------------
  */
 
@@ -100,11 +101,40 @@ public class FindUserUI extends JFrame {
 				}
 				
 				else {
-					new FindMail(InputEmail);
-					//"메일이 발송되었습니다." UI 추가될 경우 추가
-					LoginUI endFind = new LoginUI();
-					endFind.setVisible(true);
-					dispose();
+					try {
+						String sQl;
+						Connection cOnn = null;
+						Statement st = null;
+						ResultSet rs = null;
+						
+						Class.forName(DBConn.forName);
+						cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+						
+						st = cOnn.createStatement();
+						sQl = "USE UserDB";
+						st.executeQuery(sQl);
+						rs = st.executeQuery("SELECT Email FROM UserData WHERE Email = '" + InputEmail + "'");
+						
+						while(rs.next())
+							Email = rs.getString("Email");
+					
+						if(InputEmail.equals(Email)) {
+							new FindMail(InputEmail);
+							MailSendingFin sendingFin = new MailSendingFin();
+							sendingFin.setVisible(true);
+							dispose();
+						}
+						else {
+							EmailInconsistency noEmail = new EmailInconsistency();
+							noEmail.setVisible(true);
+							dispose();
+						}
+						
+						rs.close();
+						st.close();
+					} catch(ClassNotFoundException | SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
