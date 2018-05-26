@@ -1,7 +1,7 @@
 /**
  * title : MainUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.0.0.
+ * version : 2.1.0.
  * since : 2018 - 05 - 07
  * brief : Main UI 및 메소드 클래스
  * -----------------------------------
@@ -11,6 +11,7 @@
  *   김한동       1.0.0.   2018-05-25                                            패키지화 및 주석 추가
  *   안동주       1.1.0.   2018-05-25                                              MainUI 수정
  *   김한동       2.0.0.   2018-05-26                                          과목등록 버튼 기능 활성화
+ *   김한동       2.1.0.   2018-05-26                              로그아웃 버튼 기능 활성화, to do 항목 등록 버튼 기능 활성화
  * -----------------------------------
  */
 
@@ -54,6 +55,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.JMenu;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JLabel;
 //import com.jgoodies.forms.factories.DefaultComponentFactory;
 import javax.swing.JSplitPane;
 
@@ -77,23 +79,23 @@ public class MainUI extends JFrame {
 		regiSubButton.setBounds(41, 523, 41, 27);
 		contentPane.add(regiSubButton);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBackground(Color.DARK_GRAY);
-		textArea.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
-		textArea.setForeground(Color.WHITE);
-		textArea.setText("\uC804\uCCB4 \uD560 \uC77C");
-		textArea.setBounds(14, 12, 241, 41);
-		contentPane.add(textArea);
+		JLabel titleArea = new JLabel();
+		titleArea.setBackground(Color.DARK_GRAY);
+		titleArea.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
+		titleArea.setForeground(Color.WHITE);
+		titleArea.setText("To do List");
+		titleArea.setBounds(14, 12, 241, 41);
+		contentPane.add(titleArea);
 		
-		JButton btnNewButton = new JButton("\uB85C\uADF8\uC544\uC6C3");
-		btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		btnNewButton.setBounds(498, 519, 100, 30);
-		contentPane.add(btnNewButton);
+		JButton logoutButton = new JButton("\uB85C\uADF8\uC544\uC6C3");
+		logoutButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		logoutButton.setBounds(498, 519, 100, 30);
+		contentPane.add(logoutButton);
 		
-		JButton btnNewButton_1 = new JButton("+");
-		btnNewButton_1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		btnNewButton_1.setBounds(632, 519, 45, 30);
-		contentPane.add(btnNewButton_1);
+		JButton regiListButton = new JButton("+");
+		regiListButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		regiListButton.setBounds(632, 519, 45, 30);
+		contentPane.add(regiListButton);
 		
 		Checkbox checkbox = new Checkbox("\uC644\uB8CC\uB41C \uD56D\uBAA9\uB3C4 \uD45C\uC2DC");
 		checkbox.setFont(new Font("Dialog", Font.PLAIN, 18));
@@ -191,6 +193,22 @@ public class MainUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				RegiSubjectUI regiSubUI = new RegiSubjectUI();
 				regiSubUI.setVisible(true);
+				dispose();
+			}
+		});
+		
+		logoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoginUI backToLogin = new LoginUI();
+				backToLogin.setVisible(true);
+				dispose();
+			}
+		});
+		
+		regiListButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegiListUI regiTodoUI = new RegiListUI();
+				regiTodoUI.setVisible(true);
 				dispose();
 			}
 		});
