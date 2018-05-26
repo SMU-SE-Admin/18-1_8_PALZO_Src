@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 4.0.0.
+ * version : 4.1.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -15,6 +15,7 @@
  *   김한동       2.1.2.   2018-05-25                                           DB 연결 변수를 전역변수에서 지역변수로 변경
  *   김한동       3.0.0.   2018-05-25                                   NULL 입력값에 대한 예외처리, 중복확인 필요 UI 주석 메세지 추가
  *   김한동       4.0.0.   2018-05-26                                           join 기능에서 Email이 공백일 때 조건 추가
+ *   김한동       4.1.0.   2018-05-26                                                 ID, Email 중복확인 UI 추가
  * -----------------------------------
  */
 
@@ -176,8 +177,9 @@ public class RegiUserUI extends JFrame {
 							dispose();
 						}
 						else {
-							System.out.println("사용가능한 아이디입니다.");
-							//메세지 UI 구축 후 추가
+							CanUseIDUI canUseID = new CanUseIDUI();
+							canUseID.setVisible(true);
+							dispose();
 						}
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
@@ -221,8 +223,9 @@ public class RegiUserUI extends JFrame {
 							dispose();
 						}
 						else {
-							System.out.println("사용가능한 이메일입니다.");
-							//메세지 UI 구축 후 추가
+							CanUseEmailUI canUseEmail = new CanUseEmailUI();
+							canUseEmail.setVisible(true);
+							dispose();
 						}
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
@@ -233,9 +236,11 @@ public class RegiUserUI extends JFrame {
 		
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(pushIdNull | pushEmailNull == false)
-					System.out.println("중복확인을 해주십시오.");
-					// 중복확인 UI 구현 후 추가
+				if(pushIdNull | pushEmailNull == false) {
+					RepeatCheckUI needRepeatCheck = new RepeatCheckUI();
+					needRepeatCheck.setVisible(true);
+					dispose();
+				}
 				
 				else {
 					if(InputID.length() == 0 | InputEmail.length() == 0) {

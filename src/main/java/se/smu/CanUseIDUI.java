@@ -1,15 +1,13 @@
 /**
- * title : IdError.java
+ * title : CanUseIDUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.0.0.
+ * version : 0.0.0.
  * since : 2018 - 05 - 07
- * brief : 로그인 에러 메세지 클래스
+ * brief : 아이디 중복확인 메세지 출력
  * -----------------------------------
  * history
- *   author  version     date                            brief
- *   안동주       0.0.0.   2018-05-22                        초안 작성
- *   김한동       1.0.0.   2018-05-23     패키지 추가, import문 정렬, 닫기 버튼 기능 활성화, 버튼명 수정
- *   김한동       2.0.0.   2018-05-26       JLable로 되어야 할 것이 TextField로 되어있는 것 수정
+ *   author  version      date                            brief
+ *   김한동       0.0.0.    2018-05-26                        초안 작성
  * -----------------------------------
  */
 
@@ -30,10 +28,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 
-public class IdError extends JFrame {
+
+public class CanUseIDUI extends JFrame{
 	private JPanel contentPane;
 
-	public IdError() {
+	public CanUseIDUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
@@ -52,14 +51,14 @@ public class IdError extends JFrame {
 		
 		JLabel txtpnAsd = new JLabel();
 		txtpnAsd.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-		txtpnAsd.setText("\uC798\uBABB\uB41C \uD68C\uC6D0 \uC815\uBCF4\uC785\uB2C8\uB2E4.");
+		txtpnAsd.setText("사용 가능한 아이디입니다.");
 		txtpnAsd.setBounds(147, 82, 214, 61);
 		contentPane.add(txtpnAsd);
 		
 		backToLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LoginUI backToLogin = new LoginUI();
-				backToLogin.setVisible(true);
+				RegiUserUI backToRegiUser = new RegiUserUI();
+				backToRegiUser.setVisible(true);
 				dispose();
 			}
 		});
@@ -69,7 +68,7 @@ public class IdError extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					IdError frame = new IdError();
+					CanUseIDUI frame = new CanUseIDUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
