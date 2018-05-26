@@ -1,7 +1,7 @@
 /**
  * title : SubjectDB.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.0.0.
+ * version : 2.1.0.
  * since : 2018 - 05 - 07
  * brief : SubjectDB 클래스
  * -----------------------------------
@@ -11,6 +11,7 @@
  *   김한동       1.0.0.   2018-05-22             DBConn USE UserDB String 값 대체
  *   김한동       1.0.1.   2018-05-23      DB 직접 접속 후 Table로 접근, 불필요한 스캐너 import 삭제
  *   김한동       2.0.0.   2018-05-25               Table 접근 시 발생하는 문제 해결
+ *   김한동       2.1.0.   2018-05-26		          E과목 년도 등 변수형 수정(int -> String)
  * -----------------------------------
  */
 
@@ -20,7 +21,7 @@ import se.smu.*;
 import java.sql.*;
 
 public class SubjectDB {
-	void SubjectData(String Subject, String Professor, int subjectYear, int subjectSem, String subjectDate, int subjectStart, int subjectEnd, String room) {
+	void SubjectData(String Subject, String Professor, String subjectYear, String subjectSem, String subjectDate, String subjectStart, String subjectEnd, String room) {
 		try {
 			int checkNull = 0;
 			String dataBase;
@@ -48,8 +49,8 @@ public class SubjectDB {
 				sQl = "USE SubjectDB";
 				st.execute(sQl);
 				sQl = "CREATE TABLE SubjectData(Subject char(20) NOT NULL PRIMARY KEY, Professor char(10) NOT NULL, "
-						+ "subjectYear int(5) NOT NULL, subjectSem int(5) NOT NULL, subjectDate char(5) NOT NULL, "
-						+ "subjectStart int(5) NOT NULL, subjectEnd int(5) NOT NULL, room char(10) NOT NULL)";
+						+ "subjectYear char(5) NOT NULL, subjectSem char(5) NOT NULL, subjectDate char(5) NOT NULL, "
+						+ "subjectStart char(5) NOT NULL, subjectEnd char(5) NOT NULL, room char(10) NOT NULL)";
 				st.execute(sQl);
 			}
 			
@@ -63,11 +64,11 @@ public class SubjectDB {
 				
 				pst.setString(1, Subject);
 				pst.setString(2, Professor);
-				pst.setInt(3, subjectYear);
-				pst.setInt(4, subjectSem);
+				pst.setString(3, subjectYear);
+				pst.setString(4, subjectSem);
 				pst.setString(5, subjectDate);
-				pst.setInt(6, subjectStart);
-				pst.setInt(7, subjectEnd);
+				pst.setString(6, subjectStart);
+				pst.setString(7, subjectEnd);
 				pst.setString(8, room);
 				pst.executeUpdate();
 				
