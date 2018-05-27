@@ -1,7 +1,7 @@
 /**
  * title : RegiSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.1.0.
+ * version : 2.2.0.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 등록 UI
  * -----------------------------------
@@ -11,6 +11,7 @@
  *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
  *   김한동       2.0.0.   2018-05-26           버튼 기능 활성화, 중복확인 버튼 및 기능 추가
  *   김한동       2.1.0.   2018-05-26                 입력값들에 대한 예외처리
+ *   김한동       2.2.0.   2018-05-28                  과목 등록 성공 버튼 추가
  * -----------------------------------
  */
 
@@ -263,8 +264,9 @@ public class RegiSubjectUI extends JFrame {
 						}
 						
 						else {
-							System.out.println("등록가능한 과목입니다.");
-							//메세지 UI 구축 후 추가
+							CanUseSubjectUI canUseSubject = new CanUseSubjectUI();
+							canUseSubject.setVisible(true);
+							dispose();
 						}
 					}
 												
@@ -296,13 +298,18 @@ public class RegiSubjectUI extends JFrame {
 							(Integer.parseInt(InputSubjectStart) < 0 || Integer.parseInt(InputSubjectStart) > 24) ||
 							(Integer.parseInt(InputSubjectEnd) < 0 || Integer.parseInt(InputSubjectEnd) > 24) ||
 							(Integer.parseInt(InputSubjectStart) > Integer.parseInt(InputSubjectEnd))) {
-						System.out.println("학기는 1~4학기, 시간은 0~24시, 시작시간은 종료시간보다 작게 설정하십시오.");
-						//메세지 UI 구현 후 추가
+						InputTypeErrorUI typeError = new InputTypeErrorUI();
+						typeError.setVisible(true);
+						dispose();
 					}
 					else {
 						SubjectDB subjectDB = new SubjectDB();
 						subjectDB.SubjectData(InputSubject, InputProfessor, InputSubjectYear, InputSubjectSem, InputSubjectDate, InputSubjectStart, InputSubjectEnd, InputRoom);
-					
+
+						RegiSuccess successMessage = new RegiSuccess();
+						successMessage.setVisible(true);
+						dispose();
+						
 						MainUI backToMain = new MainUI();
 						backToMain.setVisible(true);
 						dispose();
