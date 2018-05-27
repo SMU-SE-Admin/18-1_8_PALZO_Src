@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 4.1.0.
+ * version : 4.2.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -15,7 +15,8 @@
  *   김한동       2.1.2.   2018-05-25                                           DB 연결 변수를 전역변수에서 지역변수로 변경
  *   김한동       3.0.0.   2018-05-25                                   NULL 입력값에 대한 예외처리, 중복확인 필요 UI 주석 메세지 추가
  *   김한동       4.0.0.   2018-05-26                                           join 기능에서 Email이 공백일 때 조건 추가
- *   김한동       4.1.0.   2018-05-26                                                 ID, Email 중복확인 UI 추가
+ *   김한동       4.1.0.   2018-05-26                                                ID, Email 중복확인 UI 추가
+ *   김한동       4.2.0.   2018-05-28                                          각 필드값에서 입력을 받아드리지 못하는 부분 수정 
  * -----------------------------------
  */
 
@@ -236,22 +237,21 @@ public class RegiUserUI extends JFrame {
 		
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(pushIdNull | pushEmailNull == false) {
+				InputID = idTextField.getText();
+				InputPassword = new String(pwTextField.getPassword());
+				InputEmail = emailTextField.getText();
+				/*if(pushIdNull | pushEmailNull == false) {
 					RepeatCheckUI needRepeatCheck = new RepeatCheckUI();
 					needRepeatCheck.setVisible(true);
 					dispose();
 				}
 				
-				else {
+				else {*/
 					if(InputID.length() == 0 | InputEmail.length() == 0) {
 						ReEnterRequest noNull = new ReEnterRequest();
 						noNull.setVisible(true);
 					}
 					else {
-						InputID = idTextField.getText();
-						InputPassword = new String(pwTextField.getPassword());
-						InputEmail = emailTextField.getText();
-
 						System.out.println(InputID + InputPassword + InputEmail);
 						UserDB userDB = new UserDB();
 						userDB.UserData(InputID, InputPassword, InputEmail);
@@ -262,7 +262,7 @@ public class RegiUserUI extends JFrame {
 						backToLogin.setVisible(true);
 						dispose();
 					}
-				}
+				//}
 			}
 		});
 		
