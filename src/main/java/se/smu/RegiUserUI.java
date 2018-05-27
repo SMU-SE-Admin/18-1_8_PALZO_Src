@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 4.2.0.
+ * version : 4.3.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -17,6 +17,7 @@
  *   김한동       4.0.0.   2018-05-26                                           join 기능에서 Email이 공백일 때 조건 추가
  *   김한동       4.1.0.   2018-05-26                                                ID, Email 중복확인 UI 추가
  *   김한동       4.2.0.   2018-05-28                                          각 필드값에서 입력을 받아드리지 못하는 부분 수정 
+ *   김한동       4.3.0.   2018-05-28                                                    회원가입 성공 메세지 출력
  * -----------------------------------
  */
 
@@ -257,6 +258,9 @@ public class RegiUserUI extends JFrame {
 						userDB.UserData(InputID, InputPassword, InputEmail);
 						//회원가입 성공 테스트
 						//System.out.println("Join Success");
+						RegiSuccess successMessage = new RegiSuccess();
+						successMessage.setVisible(true);
+						dispose();
 				
 						LoginUI backToLogin = new LoginUI();
 						backToLogin.setVisible(true);
