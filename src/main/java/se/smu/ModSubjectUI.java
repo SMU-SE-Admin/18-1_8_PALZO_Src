@@ -1,7 +1,7 @@
 /**
  * title : ModSubjectUI.java
  * author : ±èÇÑµ¿ (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 3.0.0.
  * since : 2018 - 05 - 07
  * brief : °ú¸ñ Ç×¸ñ ¼öÁ¤ UI
  * -----------------------------------
@@ -9,12 +9,15 @@
  *   author  version     date                          brief
  *   ¾Èµ¿ÁÖ       0.0.0.   2018-05-22                      ÃÊ¾È ÀÛ¼º
  *   ±èÇÑµ¿       1.0.0.   2018-05-25                  ÆÐÅ°Áö Ãß°¡, ÁÖ¼® ÀÛ¼º
+ *   ±èÇÑµ¿       2.0.0.   2018-05-28         textpane ºÎºÐ label ·Î ¼öÁ¤, ¹öÆ° ±â´É È°¼ºÈ­
+ *   ±èÇÑµ¿       3.0.0.   2018-05-29              ½ÇÁ¦ ¼öÁ¤ ±â´É Å¬·¡½º·Î µû·Î ±¸Çö
  * -----------------------------------
  */
 
 package se.smu;
 
 import se.smu.*;
+import java.sql.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
@@ -32,15 +35,34 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 
 public class ModSubjectUI extends JFrame {
-
+	//DB¿¡¼­ ¼öÁ¤ÇÒ Ç×¸ñ ºÒ·¯¿Ã º¯¼ö
+	static String subjectName;
+	static String professorName;
+	static String subjectYearName;
+	static String subjectSemName;
+	static String subjectDateName;
+	static String subjectStartName;
+	static String subjectEndName;
+	static String subjectRoomName;
+	//¼öÁ¤ÇÒ ³»¿ë ÀÔ·Â¹ÞÀ» º¯¼ö
+	static String inputSubject;
+	static String inputProfessor;
+	static String inputSubjectYear;
+	static String inputSubjectSem;
+	static String inputSubjectDate;
+	static String inputSubjectStart;
+	static String inputSubjectEnd;
+	static String inputSubjectRoom;
+	
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	private JTextField subjectTextField;
+	private JTextField professorTextField;
+	private JTextField yearTextField;
+	private JTextField semTextField;
+	private JTextField startTextField;
+	private JTextField endTextField;
+	private JTextField roomTextField;
+	private JTextField subjectDateTextField;
 
 	public ModSubjectUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,130 +73,135 @@ public class ModSubjectUI extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		JButton btnNewButton = new JButton("\uBCC0\uACBD");
-		btnNewButton.setBackground(Color.DARK_GRAY);
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(430, 210, 100, 30);
-		contentPane.add(btnNewButton);
+		//º¯°æ ¹öÆ°
+		JButton modifySubject = new JButton("\uBCC0\uACBD");
+		modifySubject.setBackground(Color.DARK_GRAY);
+		modifySubject.setForeground(Color.WHITE);
+		modifySubject.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		modifySubject.setBounds(430, 210, 100, 30);
+		contentPane.add(modifySubject);
 		
-		JButton button = new JButton("\uCDE8\uC18C");
-		button.setForeground(Color.WHITE);
-		button.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		button.setBackground(Color.DARK_GRAY);
-		button.setBounds(430, 280, 100, 30);
-		contentPane.add(button);
+		//Ãë¼Ò¹öÆ°
+		JButton cancelModify = new JButton("\uCDE8\uC18C");
+		cancelModify.setForeground(Color.WHITE);
+		cancelModify.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		cancelModify.setBackground(Color.DARK_GRAY);
+		cancelModify.setBounds(430, 280, 100, 30);
+		contentPane.add(cancelModify);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textPane.setText("\uACFC\uBAA9\uBA85");
-		textPane.setBounds(50, 90, 80, 30);
-		contentPane.add(textPane);
+		JLabel subjectLabel = new JLabel();
+		subjectLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		subjectLabel.setText("\uACFC\uBAA9\uBA85");
+		subjectLabel.setBounds(50, 90, 80, 30);
+		contentPane.add(subjectLabel);
 		
-		JTextPane textPane_1 = new JTextPane();
-		textPane_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textPane_1.setText("\uB2F4\uB2F9\uAD50\uC218");
-		textPane_1.setBounds(50, 130, 87, 27);
-		contentPane.add(textPane_1);
+		JLabel professorLabel = new JLabel();
+		professorLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		professorLabel.setText("\uB2F4\uB2F9\uAD50\uC218");
+		professorLabel.setBounds(50, 130, 87, 27);
+		contentPane.add(professorLabel);
 		
-		JTextPane textPane_2 = new JTextPane();
-		textPane_2.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textPane_2.setText("\uAC15\uC758\uC2DC\uAC04");
-		textPane_2.setBounds(50, 170, 87, 27);
-		contentPane.add(textPane_2);
+		JLabel yearLabel = new JLabel();
+		yearLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		yearLabel.setText("\uAC15\uC758³âµµ");
+		yearLabel.setBounds(50, 170, 87, 27);
+		contentPane.add(yearLabel);
 		
-		JTextPane textPane_3 = new JTextPane();
-		textPane_3.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textPane_3.setText("\uAC15\uC758\uC2DC\uAC04");
-		textPane_3.setBounds(50, 210, 87, 27);
-		contentPane.add(textPane_3);
+		JLabel timeLabel = new JLabel();
+		timeLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		timeLabel.setText("\uAC15\uC758\uC2DC\uAC04");
+		timeLabel.setBounds(50, 210, 87, 27);
+		contentPane.add(timeLabel);
 		
-		JTextPane textPane_4 = new JTextPane();
-		textPane_4.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textPane_4.setText("\uAC15\uC758\uC2E4");
-		textPane_4.setBounds(50, 250, 87, 27);
-		contentPane.add(textPane_4);
+		JLabel roomLabel = new JLabel();
+		roomLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		roomLabel.setText("\uAC15\uC758\uC2E4");
+		roomLabel.setBounds(50, 250, 87, 27);
+		contentPane.add(roomLabel);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField.setBounds(150, 90, 184, 24);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		subjectTextField = new JTextField();
+		subjectTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		subjectTextField.setBounds(150, 90, 184, 24);
+		contentPane.add(subjectTextField);
+		subjectTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField_1.setColumns(10);
-		textField_1.setBounds(150, 130, 184, 24);
-		contentPane.add(textField_1);
+		professorTextField = new JTextField();
+		professorTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		professorTextField.setColumns(10);
+		professorTextField.setBounds(150, 130, 184, 24);
+		contentPane.add(professorTextField);
 		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField_2.setColumns(10);
-		textField_2.setBounds(150, 170, 56, 24);
-		contentPane.add(textField_2);
+		yearTextField = new JTextField();
+		yearTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		yearTextField.setColumns(10);
+		yearTextField.setBounds(150, 170, 56, 24);
+		contentPane.add(yearTextField);
 		
-		JTextPane textPane_5 = new JTextPane();
+		JLabel textPane_5 = new JLabel();
 		textPane_5.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		textPane_5.setText("\uB144\uB3C4");
 		textPane_5.setBounds(211, 170, 45, 24);
 		contentPane.add(textPane_5);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(260, 170, 35, 24);
-		contentPane.add(textField_3);
+		semTextField = new JTextField();
+		semTextField.setColumns(10);
+		semTextField.setBounds(260, 170, 35, 24);
+		contentPane.add(semTextField);
 		
-		JTextPane textPane_6 = new JTextPane();
+		JLabel textPane_6 = new JLabel();
 		textPane_6.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		textPane_6.setText("\uD559\uAE30");
 		textPane_6.setBounds(300, 170, 45, 24);
 		contentPane.add(textPane_6);
 		
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField_4.setColumns(10);
-		textField_4.setBounds(232, 210, 35, 30);
-		contentPane.add(textField_4);
+		startTextField = new JTextField();
+		startTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		startTextField.setColumns(10);
+		startTextField.setBounds(232, 210, 35, 30);
+		contentPane.add(startTextField);
 		
-		JTextPane textPane_7 = new JTextPane();
+		JLabel textPane_7 = new JLabel();
 		textPane_7.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		textPane_7.setText("\uC2DC");
 		textPane_7.setBounds(269, 210, 24, 24);
 		contentPane.add(textPane_7);
 		
-		JTextPane textPane_8 = new JTextPane();
+		JLabel textPane_8 = new JLabel();
 		textPane_8.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		textPane_8.setText("\uC2DC");
 		textPane_8.setBounds(349, 210, 34, 24);
 		contentPane.add(textPane_8);
 		
-		textField_5 = new JTextField();
-		textField_5.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField_5.setColumns(10);
-		textField_5.setBounds(314, 210, 35, 30);
-		contentPane.add(textField_5);
+		endTextField = new JTextField();
+		endTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		endTextField.setColumns(10);
+		endTextField.setBounds(314, 210, 35, 30);
+		contentPane.add(endTextField);
 		
-		JTextPane textPane_9 = new JTextPane();
+		JLabel textPane_9 = new JLabel();
 		textPane_9.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		textPane_9.setText("~");
 		textPane_9.setBounds(291, 210, 26, 24);
 		contentPane.add(textPane_9);
 		
-		textField_6 = new JTextField();
-		textField_6.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
-		textField_6.setColumns(10);
-		textField_6.setBounds(150, 250, 56, 24);
-		contentPane.add(textField_6);
+		roomTextField = new JTextField();
+		roomTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		roomTextField.setColumns(10);
+		roomTextField.setBounds(150, 250, 56, 24);
+		contentPane.add(roomTextField);
 		
+		subjectDateTextField = new JTextField();
+		subjectDateTextField.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		subjectDateTextField.setBounds(150, 210, 80, 30);
+		contentPane.add(subjectDateTextField);
+		
+		/*
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"\uC6D4\uC694\uC77C", "\uD654\uC694\uC77C", "\uC218\uC694\uC77C", "\uBAA9\uC694\uC77C", "\uAE08\uC694\uC77C", "\uD1A0\uC694\uC77C", "\uC77C\uC694\uC77C"}));
 		comboBox.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		comboBox.setBounds(150, 210, 80, 30);
 		contentPane.add(comboBox);
+		*/
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -185,6 +212,65 @@ public class ModSubjectUI extends JFrame {
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 35));
 		panel.add(label);
+		
+		modifySubject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+						String sQl;					
+						Connection cOnn = null;
+						Statement st = null;
+						PreparedStatement pst = null;
+						ResultSet rs = null;
+						
+						Class.forName(DBConn.forName);
+						cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+						
+						st = cOnn.createStatement();
+						sQl = "USE SubjectDB";
+						st.execute(sQl);
+						rs = st.executeQuery("SELECT * FROM SubjectData");
+						
+						while(rs.next()) {
+							subjectName = rs.getString("Subject");
+							professorName = rs.getString("Professor");
+							subjectYearName = rs.getString("subjectYear");
+							subjectSemName = rs.getString("subjectSem");
+							subjectDateName = rs.getString("subjectDate");
+							subjectStartName = rs.getString("subjectStart");
+							subjectEndName = rs.getString("subjectEnd");
+							subjectRoomName = rs.getString("room");
+							
+							inputSubject = subjectTextField.getText();
+							inputProfessor = professorTextField.getText();
+							inputSubjectYear = yearTextField.getText();
+							inputSubjectSem = semTextField.getText();
+							inputSubjectDate = subjectDateTextField.getText();
+							inputSubjectStart = startTextField.getText();
+							inputSubjectEnd = endTextField.getText();
+							inputSubjectRoom = roomTextField.getText();
+							
+							new ModSubjectActive(inputSubject, inputProfessor, inputSubjectYear, inputSubjectSem, inputSubjectDate, inputSubjectStart, inputSubjectEnd, inputSubjectRoom);
+							
+							rs.close();
+							st.close();
+														
+						}
+				} catch(ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+				MainUI successMessage = new MainUI();
+				successMessage.setVisible(true);
+				dispose();
+			}
+		});
+		
+		cancelModify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainUI backToMain = new MainUI();
+				backToMain.setVisible(true);
+				dispose();
+			}
+		});
 		
 	}
 	
