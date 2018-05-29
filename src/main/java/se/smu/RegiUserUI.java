@@ -19,23 +19,26 @@
 
 package se.smu;
 
-import se.smu.*;
-import java.sql.*;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import javax.swing.JTextField;
-import javax.swing.JButton;
+import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
 
 public class RegiUserUI extends JFrame {
 	
@@ -232,11 +235,11 @@ public class RegiUserUI extends JFrame {
 		
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(pushIdNull | pushEmailNull == false)
+				/*if(pushIdNull | pushEmailNull == false)
 					System.out.println("중복확인을 해주십시오.");
 					// 중복확인 UI 구현 후 추가
 				
-				else {
+				else {*/
 					if(InputID.length() == 0) {
 						ReEnterRequest noNull = new ReEnterRequest();
 						noNull.setVisible(true);
@@ -256,7 +259,7 @@ public class RegiUserUI extends JFrame {
 						backToLogin.setVisible(true);
 						dispose();
 					}
-				}
+				//}
 			}
 		});
 		
