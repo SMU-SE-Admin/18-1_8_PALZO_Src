@@ -1,7 +1,7 @@
 /**
  * title : ModSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.1.0.
+ * version : 3.2.0.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 수정 UI
  * -----------------------------------
@@ -12,6 +12,7 @@
  *   김한동       2.0.0.   2018-05-28              textpane 부분 label 로 수정, 버튼 기능 활성화
  *   김한동       3.0.0.   2018-05-29                    실제 수정 기능 클래스로 따로 구현
  *   김한동       3.1.0.   2018-05-29          기존 저장된 과목명을 통해 과목을 확인하고 수정할 수 있는 기능 구현
+ *   김한동       3.2.0.   2018-05-29                       삭제 버튼 및 기능 추가
  * -----------------------------------
  */
 
@@ -75,12 +76,20 @@ public class ModSubjectUI extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
+		//삭제버튼
+		JButton deleteButton = new JButton("삭제");
+		deleteButton.setForeground(Color.WHITE);
+		deleteButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		deleteButton.setBackground(Color.DARK_GRAY);
+		deleteButton.setBounds(430, 210, 100, 30);
+		contentPane.add(deleteButton);
+		
 		//변경 버튼
 		JButton modifySubject = new JButton("\uBCC0\uACBD");
 		modifySubject.setBackground(Color.DARK_GRAY);
 		modifySubject.setForeground(Color.WHITE);
 		modifySubject.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		modifySubject.setBounds(430, 210, 100, 30);
+		modifySubject.setBounds(430, 245, 100, 30);
 		contentPane.add(modifySubject);
 		
 		//취소버튼
@@ -257,6 +266,42 @@ public class ModSubjectUI extends JFrame {
 		label.setFont(new Font("맑은 고딕", Font.PLAIN, 35));
 		panel.add(label);
 		
+		deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String sQl;					
+					Connection cOnn = null;
+					Statement st = null;
+					PreparedStatement pst = null;
+					ResultSet rs = null;
+					
+					Class.forName(DBConn.forName);
+					cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+					
+					st = cOnn.createStatement();
+					sQl = "USE SubjectDB";
+					st.execute(sQl);
+					rs = st.executeQuery("SELECT * FROM SubjectData");
+					
+					while(rs.next()) {
+						subjectName = rs.getString("Subject");
+					
+						if(subjectBtnName.equals(subjectName)) {
+							sQl = "DELETE FROM SubjectData WHERE Subject =" + "\'" + subjectName + "\'";
+							st.execute(sQl);
+						}
+					}
+					
+					rs.close();
+					st.close();
+				} catch(ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+				MainUI backToMain = new MainUI();
+				backToMain.setVisible(true);
+			}
+		});
+		
 		modifySubject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -275,14 +320,6 @@ public class ModSubjectUI extends JFrame {
 						rs = st.executeQuery("SELECT * FROM SubjectData");
 						
 						while(rs.next()) {
-//							subjectName = rs.getString("Subject");
-//							professorName = rs.getString("Professor");
-//							subjectYearName = rs.getString("subjectYear");
-//							subjectSemName = rs.getString("subjectSem");
-//							subjectDateName = rs.getString("subjectDate");
-//							subjectStartName = rs.getString("subjectStart");
-//							subjectEndName = rs.getString("subjectEnd");
-//							subjectRoomName = rs.getString("room");
 							
 							inputSubject = subjectTextField.getText();
 							inputProfessor = professorTextField.getText();
