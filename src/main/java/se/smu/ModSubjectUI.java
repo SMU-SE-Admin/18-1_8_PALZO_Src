@@ -1,7 +1,7 @@
 /**
  * title : ModSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.2.0.
+ * version : 3.2.1.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 수정 UI
  * -----------------------------------
@@ -13,6 +13,7 @@
  *   김한동       3.0.0.   2018-05-29                    실제 수정 기능 클래스로 따로 구현
  *   김한동       3.1.0.   2018-05-29          기존 저장된 과목명을 통해 과목을 확인하고 수정할 수 있는 기능 구현
  *   김한동       3.2.0.   2018-05-29                       삭제 버튼 및 기능 추가
+ *   김한동       3.2.1.   2018-05-29               과목 삭제 시 해당 todo도 삭제되는 부분 주석 추가
  * -----------------------------------
  */
 
@@ -291,7 +292,7 @@ public class ModSubjectUI extends JFrame {
 							st.execute(sQl);
 						}
 					}
-					
+					//To do도 같이 삭제될 수 있도록 추가
 					rs.close();
 					st.close();
 				} catch(ClassNotFoundException | SQLException e1) {
