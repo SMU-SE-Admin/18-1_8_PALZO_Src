@@ -1,26 +1,28 @@
 /**
  * title : MainUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 3.2.0.
  * since : 2018 - 05 - 07
  * brief : Main UI 및 메소드 클래스
  * -----------------------------------
  * history
- *   author  version     date                                                    brief
- *   안동주       0.0.0.   2018-05-25                                                초안 작성
- *   김한동       1.0.0.   2018-05-25                                            패키지화 및 주석 추가
- *   안동주       1.1.0.   2018-05-25                                              MainUI 수정
- *   김한동       2.0.0.   2018-05-26                                          과목등록 버튼 기능 활성화
+ *   author  version     date                                                     brief
+ *   안동주       0.0.0.   2018-05-25                                                 초안 작성
+ *   김한동       1.0.0.   2018-05-25                                             패키지화 및 주석 추가
+ *   안동주       1.1.0.   2018-05-25                                               MainUI 수정
+ *   김한동       2.0.0.   2018-05-26                                           과목등록 버튼 기능 활성화
  *   김한동       2.1.0.   2018-05-26                              로그아웃 버튼 기능 활성화, to do 항목 등록 버튼 기능 활성화
- *   안동주       2.2.0.   2018-05-28                                            메인 UI 레이아웃 변경
- *   김한동       3.0.0.   2018-05-29                                       과목, Todo, 로그아웃 버튼 활성화
+ *   안동주       2.2.0.   2018-05-28                                             메인 UI 레이아웃 변경
+ *   김한동       3.0.0.   2018-05-29                                        과목, Todo, 로그아웃 버튼 활성화
  *   김한동       3.1.0.   2018-05-29                                            색상 변경 이벤트 활성화
+ *   김한동       3.2.0.   2018-05-29                                    반복문을 통해 데이터베이스에서 받아 버튼 생성
  * -----------------------------------
  */
 
 package se.smu;
 
 import se.smu.*;
+import java.sql.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Checkbox;
@@ -71,6 +73,9 @@ import java.awt.event.ActionEvent;
 
 public class MainUI extends JFrame {
 
+	static String subjectBtnName;
+	static int i = 0;
+	static String arr[];
 	private JPanel ContentBtn;
 	private JTable table;
 
@@ -187,27 +192,61 @@ public class MainUI extends JFrame {
 			txtpnX.setBounds(350, 520, 90, 30);
 			ContentBtn.add(txtpnX);
 			
+			//정렬 콤보박스
 			JComboBox comboBox_1 = new JComboBox();
 			panel.add(comboBox_1);
 			comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"\uC911\uC694\uB3C4\uC21C \uC815\uB82C", "\uC2E4\uC81C\uB9C8\uAC10\uC77C \uC815\uB82C", "\uB9C8\uAC10\uAE30\uD55C \uC815\uB82C"}));
 			comboBox_1.setForeground(Color.BLACK);
 			comboBox_1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 			
-			JButton ToDoBtn1 = new JButton("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
-			ToDoBtn1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-				}
-			});
-			ToDoBtn1.setBackground(Color.WHITE);
-			ToDoBtn1.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-			ToDoBtn1.setBounds(15, 130, 150, 40);
-			ContentBtn.add(ToDoBtn1);
-			
 			JLabel lblNewLabel = new JLabel("To-Do List");
 			lblNewLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 			lblNewLabel.setBounds(15, 100, 150, 30);
 			ContentBtn.add(lblNewLabel);
 			
+			try {
+					String sQl;
+					Connection cOnn = null;
+					Statement st = null;
+					ResultSet rs = null;
+					int changePosition = 0;
+					int i = 0;
+					
+					Class.forName(DBConn.forName);
+					cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+					
+					st = cOnn.createStatement();
+					sQl = "USE SubjectDB";
+					st.execute(sQl);
+					rs = st.executeQuery("SELECT Subject FROM SubjectData");
+					
+					while(rs.next()) {
+						subjectBtnName = rs.getString("Subject");
+
+						//과목 1번 버튼
+						JButton ToDoBtn1 = new JButton(subjectBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+						ToDoBtn1.setBackground(Color.WHITE);
+						ToDoBtn1.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+						ToDoBtn1.setBounds(15, 130+changePosition, 150, 40);
+						changePosition+=40;
+						ContentBtn.add(ToDoBtn1);
+						ToDoBtn1.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								String buttonName  =arg0.getSource().toString().split("text=")[1].split(",")[0];
+								ModSubjectUI modSubject = new ModSubjectUI(buttonName);
+								modSubject.setVisible(true);
+								dispose();
+							}
+						});
+						
+					}
+					rs.close();
+					st.close();
+				} catch (ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+			
+			/*
 			JButton ToDoBtn2 = new JButton("\uC720\uB2C9\uC2A4\uD504\uB85C\uADF8\uB798\uBC0D");//두번쨰버튼
 			ToDoBtn2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -257,7 +296,7 @@ public class MainUI extends JFrame {
 			ToDoBtn6.setBackground(Color.WHITE);
 			ToDoBtn6.setBounds(15, 330, 150, 40);
 			ContentBtn.add(ToDoBtn6);
-			
+			*/
 			
 			
 			JButton ContentBtn1 = new JButton("<\uC18C\uD504\uD2B8\uC6E8\uC5B4\uACF5\uD559> UI\uC124\uACC4\uC11C \uC791\uC131 \r\n\uB9C8\uAC10\uAE30\uD55C: 18.05.01 \uC2E4\uC81C\uB9C8\uAC10\uC77C: 18.05.02 \uC911\uC694\uB3C4: 3 \uC644\uB8CC\uB3C4: 5");
