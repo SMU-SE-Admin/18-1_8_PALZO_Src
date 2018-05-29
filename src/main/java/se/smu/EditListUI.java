@@ -1,7 +1,7 @@
 /**
  * title : EditListUI.java
  * author : ±Ë«—µø (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 2.0.0.
  * since : 2018 - 05 - 07
  * brief : ≈ıµŒ «◊∏Ò ºˆ¡§ UI
  * -----------------------------------
@@ -9,6 +9,7 @@
  *   author  version     date                          brief
  *   æ»µø¡÷       0.0.0.   2018-05-22                      √ æ» ¿€º∫
  *   ±Ë«—µø       1.0.0.   2018-05-25                  ∆–≈∞¡ˆ √ﬂ∞°, ¡÷ºÆ ¿€º∫
+ *   ±Ë«—µø       2.0.0.   2018-05-29          textpane ∫Œ∫– label∑Œ ºˆ¡§, ±‚¥… ±∏«ˆ
  * -----------------------------------
  */
 
@@ -18,6 +19,14 @@ import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.ScrollPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -32,11 +41,37 @@ import javax.swing.DefaultComboBoxModel;
 
 
 public class EditListUI extends JFrame {
-
+	static String todoBtnName;
+	
+	static String todoName;
+	static String subjectName;
+	static int deadLineYear;
+	static int deadLineMonth;
+	static int deadLineDay;
+	static int endYear;
+	static int endMonth;
+	static int endDay;
+	static int completeRate;
+	static int importantRate;
+	static int alarmCheck;
+	
+	static String inputtodoName;
+	static String inputsubjectName;
+	static int inputdeadLineYear;
+	static int inputdeadLineMonth;
+	static int inputdeadLineDay;
+	static int inputendYear;
+	static int inputendMonth;
+	static int inputendDay;
+	static int inputcompleteRate;
+	static int inputimportantRate;
+	static int inputalarmCheck;
+	
 	private JPanel contentPane;
 	private JTextField textField;
+	private JTextField textField_2;
 
-	public EditListUI() {
+	public EditListUI(String todoBtnName) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700,500);
 		contentPane = new JPanel();
@@ -56,49 +91,87 @@ public class EditListUI extends JFrame {
 		lblTodo.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 45));
 		panel.add(lblTodo);
 		
+		//DBø¨∞·«ÿº≠ subjectBtnName¿œ ∂ß¿« ∞™µÈ¿ª setText
+		try {
+			String sQl;
+			Connection cOnn = null;
+			Statement st = null;
+			ResultSet rs = null;
+			
+			Class.forName(DBConn.forName);
+			cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+			
+			st = cOnn.createStatement();
+			sQl = "USE TodoDB";
+			st.execute(sQl);
+			rs = st.executeQuery("SELECT * FROM TodoData");
+			
+			while(rs.next()) {
+				todoName = rs.getString("Subject");
+				if(todoName.equals(todoBtnName)) {
+					subjectName = rs.getString("Subject");
+					deadLineYear = Integer.parseInt(rs.getString("DeadLineYear"));
+					deadLineMonth = Integer.parseInt(rs.getString("DeadLineMonth"));
+					deadLineDay = Integer.parseInt(rs.getString("DeadLineDay"));
+					endYear = Integer.parseInt(rs.getString("EndYear"));
+					endMonth = Integer.parseInt(rs.getString("EndMonth"));
+					endDay = Integer.parseInt(rs.getString("EndDay"));
+					completeRate = Integer.parseInt(rs.getString("CompleteRate"));
+					importantRate = Integer.parseInt(rs.getString("ImportantRate"));
+					alarmCheck = Integer.parseInt(rs.getString("AlarmCheck"));
+				}
+			}
+
+			rs.close();
+			st.close();
+		} catch(ClassNotFoundException | SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		textField = new JTextField();
 		textField.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
+		textField.setText(todoBtnName);
 		textField.setBounds(250, 120, 210, 25);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		JTextArea txtrTt = new JTextArea();
+		JLabel txtrTt = new JLabel();
 		txtrTt.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		txtrTt.setText("To-do \uBA85");
 		txtrTt.setBounds(100, 120, 109, 24);
 		contentPane.add(txtrTt);
 		
-		JTextArea textArea_1 = new JTextArea();
+		JLabel textArea_1 = new JLabel();
 		textArea_1.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		textArea_1.setText("\uACFC\uBAA9\uC120\uD0DD");
 		textArea_1.setBounds(100, 160, 109, 24);
 		contentPane.add(textArea_1);
 		
-		JTextArea textArea_2 = new JTextArea();
+		JLabel textArea_2 = new JLabel();
 		textArea_2.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		textArea_2.setText("\uB9C8\uAC10\uAE30\uD55C");
 		textArea_2.setBounds(100, 200, 109, 24);
 		contentPane.add(textArea_2);
 		
-		JTextArea textArea_3 = new JTextArea();
+		JLabel textArea_3 = new JLabel();
 		textArea_3.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		textArea_3.setText("\uC2E4\uC81C\uB9C8\uAC10\uC77C");
 		textArea_3.setBounds(100, 240, 109, 24);
 		contentPane.add(textArea_3);
 		
-		JTextArea textArea_4 = new JTextArea();
+		JLabel textArea_4 = new JLabel();
 		textArea_4.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		textArea_4.setText("\uC911\uC694\uB3C4");
 		textArea_4.setBounds(100, 280, 109, 24);
 		contentPane.add(textArea_4);
 		
-		JTextArea textArea_5 = new JTextArea();
+		JLabel textArea_5 = new JLabel();
 		textArea_5.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		textArea_5.setText("\uC644\uB8CC\uB3C4");
 		textArea_5.setBounds(100, 320, 109, 24);
 		contentPane.add(textArea_5);
 		
-		JTextArea textArea_6 = new JTextArea();
+		JLabel textArea_6 = new JLabel();
 		textArea_6.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		textArea_6.setText("\uC54C\uB9BC\uC124\uC815");
 		textArea_6.setBounds(100, 360, 109, 24);
@@ -125,6 +198,7 @@ public class EditListUI extends JFrame {
 		comboBox_2.setBounds(250, 360, 60, 24);
 		contentPane.add(comboBox_2);
 		
+		//∫Ø∞Ê πˆ∆∞
 		JButton btnNewButton = new JButton("\uBCC0\uACBD");
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setBackground(Color.DARK_GRAY);
@@ -132,12 +206,20 @@ public class EditListUI extends JFrame {
 		btnNewButton.setBounds(500, 320, 100, 30);
 		contentPane.add(btnNewButton);
 		
+		//√Îº“ πˆ∆∞
 		JButton button = new JButton("\uCDE8\uC18C");
 		button.setForeground(Color.WHITE);
 		button.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		button.setBackground(Color.DARK_GRAY);
 		button.setBounds(500, 360, 100, 30);
 		contentPane.add(button);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainUI backToMain = new MainUI();
+				backToMain.setVisible(true);
+				dispose();
+			}
+		});
 		
 		JComboBox comboBox_3 = new JComboBox();
 		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"2018", "2019", "2020", "2021", "2022"}));
@@ -160,19 +242,19 @@ public class EditListUI extends JFrame {
 		comboBox_5.setBounds(415, 200, 45, 30);
 		contentPane.add(comboBox_5);
 		
-		JTextArea textArea = new JTextArea();
+		JLabel textArea = new JLabel();
 		textArea.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		textArea.setText("\uB144");
 		textArea.setBounds(310, 200, 30, 30);
 		contentPane.add(textArea);
 		
-		JTextArea textArea_7 = new JTextArea();
+		JLabel textArea_7 = new JLabel();
 		textArea_7.setText("\uC6D4");
 		textArea_7.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		textArea_7.setBounds(385, 200, 30, 30);
 		contentPane.add(textArea_7);
 		
-		JTextArea textArea_8 = new JTextArea();
+		JLabel textArea_8 = new JLabel();
 		textArea_8.setText("\uC77C");
 		textArea_8.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		textArea_8.setBounds(470, 200, 30, 30);
@@ -185,7 +267,7 @@ public class EditListUI extends JFrame {
 		comboBox_6.setBounds(250, 240, 60, 30);
 		contentPane.add(comboBox_6);
 		
-		JTextArea textArea_9 = new JTextArea();
+		JLabel textArea_9 = new JLabel();
 		textArea_9.setText("\uB144");
 		textArea_9.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		textArea_9.setBounds(310, 240, 30, 30);
@@ -198,7 +280,7 @@ public class EditListUI extends JFrame {
 		comboBox_7.setBounds(340, 240, 45, 30);
 		contentPane.add(comboBox_7);
 		
-		JTextArea textArea_10 = new JTextArea();
+		JLabel textArea_10 = new JLabel();
 		textArea_10.setText("\uC6D4");
 		textArea_10.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		textArea_10.setBounds(385, 240, 30, 30);
@@ -211,31 +293,85 @@ public class EditListUI extends JFrame {
 		comboBox_8.setBounds(415, 240, 45, 30);
 		contentPane.add(comboBox_8);
 		
-		JTextArea textArea_11 = new JTextArea();
+		JLabel textArea_11 = new JLabel();
 		textArea_11.setText("\uC77C");
 		textArea_11.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		textArea_11.setBounds(470, 240, 30, 30);
 		contentPane.add(textArea_11);
 		
+		textField_2 = new JTextField();
+		textField_2.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
+		textField_2.setText(subjectName);
+		textField_2.setBounds(250, 160, 210, 30);
+		contentPane.add(textField_2);
+		textField_2.setColumns(10);
+		/*
 		JComboBox comboBox_9 = new JComboBox();
 		comboBox_9.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_9.setBackground(Color.WHITE);
 		comboBox_9.setBounds(250, 160, 210, 30);
 		contentPane.add(comboBox_9);
-		
+		*/
+		//ªË¡¶ πˆ∆∞
 		JButton button_1 = new JButton("\uC0AD\uC81C");
 		button_1.setForeground(Color.WHITE);
 		button_1.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 18));
 		button_1.setBackground(Color.DARK_GRAY);
 		button_1.setBounds(500, 280, 100, 30);
 		contentPane.add(button_1);
+		
+		//∫Ø∞Ê πˆ∆∞
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+						String sQl;					
+						Connection cOnn = null;
+						Statement st = null;
+						PreparedStatement pst = null;
+						ResultSet rs = null;
+						
+						Class.forName(DBConn.forName);
+						cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+						
+						st = cOnn.createStatement();
+						sQl = "USE TodoDB";
+						st.execute(sQl);
+						rs = st.executeQuery("SELECT * FROM TodoData");
+						
+						while(rs.next()) {
+							inputtodoName = textField.getText();
+							inputsubjectName = textField_2.getText();
+							inputdeadLineYear = comboBox_3.getSelectedIndex();
+							inputdeadLineMonth = comboBox_4.getSelectedIndex();
+							inputdeadLineDay = comboBox_5.getSelectedIndex();
+							inputendYear = comboBox_6.getSelectedIndex();
+							inputendMonth = comboBox_7.getSelectedIndex();
+							inputendDay = comboBox_8.getSelectedIndex();
+							inputcompleteRate = comboBox_1.getSelectedIndex();
+							inputimportantRate = comboBox.getSelectedIndex();
+							inputalarmCheck = comboBox_2.getSelectedIndex();
+							
+							new EditListActive(inputtodoName, inputsubjectName, inputdeadLineYear+2018, inputdeadLineMonth+1, inputdeadLineDay+1, inputendYear+2018, inputendMonth+1, inputendDay+1, inputcompleteRate*2, inputimportantRate*2, inputalarmCheck);
+							
+							rs.close();
+							st.close();
+														
+						}
+				} catch(ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+				MainUI successMessage = new MainUI();
+				successMessage.setVisible(true);
+				dispose();
+			}
+		});
 	}
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EditListUI frame = new EditListUI();
+					EditListUI frame = new EditListUI(todoBtnName);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

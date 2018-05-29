@@ -1,7 +1,7 @@
 /**
  * title : MainUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.2.0.
+ * version : 3.4.0.
  * since : 2018 - 05 - 07
  * brief : Main UI 및 메소드 클래스
  * -----------------------------------
@@ -15,7 +15,9 @@
  *   안동주       2.2.0.   2018-05-28                                             메인 UI 레이아웃 변경
  *   김한동       3.0.0.   2018-05-29                                        과목, Todo, 로그아웃 버튼 활성화
  *   김한동       3.1.0.   2018-05-29                                            색상 변경 이벤트 활성화
- *   김한동       3.2.0.   2018-05-29                                    반복문을 통해 데이터베이스에서 받아 버튼 생성
+ *   김한동       3.2.0.   2018-05-29                                  반복문을 통해 데이터베이스에서 받아 과목 버튼 생성
+ *   김한동       3.3.0.   2018-05-29                                  반복문을 통해 데이터베이스에서 받아 투두 버튼 생성
+ *   김한동       3.4.0.   2018-05-30                                            과목 등록, 수정 기능 추가
  * -----------------------------------
  */
 
@@ -74,8 +76,7 @@ import java.awt.event.ActionEvent;
 public class MainUI extends JFrame {
 
 	static String subjectBtnName;
-	static int i = 0;
-	static String arr[];
+	static String todoBtnName;
 	private JPanel ContentBtn;
 	private JTable table;
 
@@ -106,11 +107,11 @@ public class MainUI extends JFrame {
 			ContentBtn.setLayout(null);
 			setContentPane(ContentBtn);
 			
-			JButton subBtn = new JButton("+");
-			subBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-			subBtn.setBounds(60, 520, 45, 30);
-			ContentBtn.add(subBtn);
-			subBtn.addActionListener(new ActionListener() {
+			JButton subRegiBtn = new JButton("+");
+			subRegiBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+			subRegiBtn.setBounds(60, 520, 45, 30);
+			ContentBtn.add(subRegiBtn);
+			subRegiBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					RegiSubjectUI regiSubject = new RegiSubjectUI();
 					regiSubject.setVisible(true);
@@ -223,14 +224,14 @@ public class MainUI extends JFrame {
 					while(rs.next()) {
 						subjectBtnName = rs.getString("Subject");
 
-						//과목 1번 버튼
-						JButton ToDoBtn1 = new JButton(subjectBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
-						ToDoBtn1.setBackground(Color.WHITE);
-						ToDoBtn1.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-						ToDoBtn1.setBounds(15, 130+changePosition, 150, 40);
+						//과목 버튼 생성
+						JButton subBtn = new JButton(subjectBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+						subBtn.setBackground(Color.WHITE);
+						subBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+						subBtn.setBounds(15, 130+changePosition, 150, 40);
 						changePosition+=40;
-						ContentBtn.add(ToDoBtn1);
-						ToDoBtn1.addActionListener(new ActionListener() {
+						ContentBtn.add(subBtn);
+						subBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								String buttonName  =arg0.getSource().toString().split("text=")[1].split(",")[0];
 								ModSubjectUI modSubject = new ModSubjectUI(buttonName);
@@ -297,8 +298,59 @@ public class MainUI extends JFrame {
 			ToDoBtn6.setBounds(15, 330, 150, 40);
 			ContentBtn.add(ToDoBtn6);
 			*/
-			
-			
+			//todo목록 진행 중
+			try {
+				String todoSubject;
+				int todoDeadLineYear;
+				int todoDeadLineMonth;
+				int todoDeadLineDay;
+				int todoEndYear;
+				int todoEndMonth;
+				int todoEndDay;
+				int todoComplete;
+				int todoImportant;
+				int todoAlarm;
+				
+				String sQl;
+				Connection cOnn = null;
+				Statement st = null;
+				ResultSet rs = null;
+				int changePosition = 0;
+				int i = 0;
+				
+				Class.forName(DBConn.forName);
+				cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+				
+				st = cOnn.createStatement();
+				sQl = "USE TodoDB";
+				st.execute(sQl);
+				rs = st.executeQuery("SELECT * FROM TodoData");
+				
+				while(rs.next()) {
+					todoBtnName = rs.getString("TodoName");
+
+					//과목 버튼 생성
+					JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+					ToDoBtn1.setBackground(Color.WHITE);
+					ToDoBtn1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+					ToDoBtn1.setBounds(200, 100+changePosition, 600, 60);
+					changePosition+=60;
+					ContentBtn.add(ToDoBtn1);
+					ToDoBtn1.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							String buttonName  =arg0.getSource().toString().split("text=")[1].split(",")[0];
+							EditListUI editList = new EditListUI(buttonName);
+							editList.setVisible(true);
+							dispose();
+						}
+					});
+				}
+				rs.close();
+				st.close();
+			} catch (ClassNotFoundException | SQLException e1) {
+				e1.printStackTrace();
+			}
+			/*
 			JButton ContentBtn1 = new JButton("<\uC18C\uD504\uD2B8\uC6E8\uC5B4\uACF5\uD559> UI\uC124\uACC4\uC11C \uC791\uC131 \r\n\uB9C8\uAC10\uAE30\uD55C: 18.05.01 \uC2E4\uC81C\uB9C8\uAC10\uC77C: 18.05.02 \uC911\uC694\uB3C4: 3 \uC644\uB8CC\uB3C4: 5");
 			ContentBtn1.setHorizontalAlignment(SwingConstants.LEFT);
 			ContentBtn1.addActionListener(new ActionListener() {
@@ -347,6 +399,6 @@ public class MainUI extends JFrame {
 			ContentBtn6.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
 			ContentBtn6.setBackground(Color.WHITE);
 			ContentBtn6.setBounds(200, 400, 600, 60);
-			ContentBtn.add(ContentBtn6);
+			ContentBtn.add(ContentBtn6);*/
 		}
 }
