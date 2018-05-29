@@ -1,7 +1,7 @@
 /**
  * title : RegiSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 3.0.1.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 등록 UI
  * -----------------------------------
@@ -13,6 +13,7 @@
  *   김한동       2.1.0.   2018-05-26                 입력값들에 대한 예외처리
  *   김한동       2.2.0.   2018-05-28                  과목 등록 성공 버튼 추가
  *   김한동       3.0.0.   2018-05-29                    불필요한 주석 정리
+ *   김한동       3.0.1.   2018-05-29                    불필요한 변수 정리
  * -----------------------------------
  */
 
@@ -38,14 +39,14 @@ import javax.swing.JLabel;
 
 public class RegiSubjectUI extends JFrame {
 	
-	static String Subject;
-	static String Professor;
-	static String subjectYear;
-	static String subjectSem;
-	static String subjectDate;
-	static String subjectStart;
-	static String subjectEnd;
-	static String room;
+//	static String Subject;
+//	static String Professor;
+//	static String subjectYear;
+//	static String subjectSem;
+//	static String subjectDate;
+//	static String subjectStart;
+//	static String subjectEnd;
+//	static String room;
 	
 	static String InputSubject;
 	static String InputProfessor;
