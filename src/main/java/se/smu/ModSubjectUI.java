@@ -1,16 +1,17 @@
 /**
  * title : ModSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 3.1.0.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 수정 UI
  * -----------------------------------
  * history
- *   author  version     date                          brief
- *   안동주       0.0.0.   2018-05-22                      초안 작성
- *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
- *   김한동       2.0.0.   2018-05-28         textpane 부분 label 로 수정, 버튼 기능 활성화
- *   김한동       3.0.0.   2018-05-29              실제 수정 기능 클래스로 따로 구현
+ *   author  version     date                               brief
+ *   안동주       0.0.0.   2018-05-22                           초안 작성
+ *   김한동       1.0.0.   2018-05-25                       패키지 추가, 주석 작성
+ *   김한동       2.0.0.   2018-05-28              textpane 부분 label 로 수정, 버튼 기능 활성화
+ *   김한동       3.0.0.   2018-05-29                    실제 수정 기능 클래스로 따로 구현
+ *   김한동       3.1.0.   2018-05-29          기존 저장된 과목명을 통해 과목을 확인하고 수정할 수 있는 기능 구현
  * -----------------------------------
  */
 
@@ -35,6 +36,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 
 public class ModSubjectUI extends JFrame {
+	static String subjectBtnName;
 	//DB에서 수정할 항목 불러올 변수
 	static String subjectName;
 	static String professorName;
@@ -64,7 +66,7 @@ public class ModSubjectUI extends JFrame {
 	private JTextField roomTextField;
 	private JTextField subjectDateTextField;
 
-	public ModSubjectUI() {
+	public ModSubjectUI(String subjectBtnName) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 403);
 		contentPane = new JPanel();
@@ -121,18 +123,55 @@ public class ModSubjectUI extends JFrame {
 		
 		subjectTextField = new JTextField();
 		subjectTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		subjectTextField.setText(subjectBtnName);
 		subjectTextField.setBounds(150, 90, 184, 24);
 		contentPane.add(subjectTextField);
 		subjectTextField.setColumns(10);
 		
+		//DB연결해서 subjectBtnName일 때의 값들을 setText
+		try {
+			String sQl;
+			Connection cOnn = null;
+			Statement st = null;
+			ResultSet rs = null;
+			
+			Class.forName(DBConn.forName);
+			cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+			
+			st = cOnn.createStatement();
+			sQl = "USE SubjectDB";
+			st.execute(sQl);
+			rs = st.executeQuery("SELECT * FROM SubjectData");
+			
+			while(rs.next()) {
+				subjectName = rs.getString("Subject");
+				if(subjectName.equals(subjectBtnName)) {
+					professorName = rs.getString("Professor");
+					subjectYearName = rs.getString("subjectYear");
+					subjectSemName = rs.getString("subjectSem");
+					subjectDateName = rs.getString("subjectDate");
+					subjectStartName = rs.getString("subjectStart");
+					subjectEndName = rs.getString("subjectEnd");
+					subjectRoomName = rs.getString("room");
+				}
+			}
+
+			rs.close();
+			st.close();
+		} catch(ClassNotFoundException | SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		professorTextField = new JTextField();
 		professorTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		professorTextField.setText(professorName);
 		professorTextField.setColumns(10);
 		professorTextField.setBounds(150, 130, 184, 24);
 		contentPane.add(professorTextField);
 		
 		yearTextField = new JTextField();
 		yearTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		yearTextField.setText(subjectYearName);
 		yearTextField.setColumns(10);
 		yearTextField.setBounds(150, 170, 56, 24);
 		contentPane.add(yearTextField);
@@ -145,6 +184,7 @@ public class ModSubjectUI extends JFrame {
 		
 		semTextField = new JTextField();
 		semTextField.setColumns(10);
+		semTextField.setText(subjectSemName);
 		semTextField.setBounds(260, 170, 35, 24);
 		contentPane.add(semTextField);
 		
@@ -156,6 +196,7 @@ public class ModSubjectUI extends JFrame {
 		
 		startTextField = new JTextField();
 		startTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		startTextField.setText(subjectStartName);
 		startTextField.setColumns(10);
 		startTextField.setBounds(232, 210, 35, 30);
 		contentPane.add(startTextField);
@@ -174,6 +215,7 @@ public class ModSubjectUI extends JFrame {
 		
 		endTextField = new JTextField();
 		endTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		endTextField.setText(subjectEndName);
 		endTextField.setColumns(10);
 		endTextField.setBounds(314, 210, 35, 30);
 		contentPane.add(endTextField);
@@ -186,12 +228,14 @@ public class ModSubjectUI extends JFrame {
 		
 		roomTextField = new JTextField();
 		roomTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		roomTextField.setText(subjectRoomName);
 		roomTextField.setColumns(10);
 		roomTextField.setBounds(150, 250, 56, 24);
 		contentPane.add(roomTextField);
 		
 		subjectDateTextField = new JTextField();
 		subjectDateTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		subjectDateTextField.setText(subjectDateName);
 		subjectDateTextField.setBounds(150, 210, 80, 30);
 		contentPane.add(subjectDateTextField);
 		
@@ -231,14 +275,14 @@ public class ModSubjectUI extends JFrame {
 						rs = st.executeQuery("SELECT * FROM SubjectData");
 						
 						while(rs.next()) {
-							subjectName = rs.getString("Subject");
-							professorName = rs.getString("Professor");
-							subjectYearName = rs.getString("subjectYear");
-							subjectSemName = rs.getString("subjectSem");
-							subjectDateName = rs.getString("subjectDate");
-							subjectStartName = rs.getString("subjectStart");
-							subjectEndName = rs.getString("subjectEnd");
-							subjectRoomName = rs.getString("room");
+//							subjectName = rs.getString("Subject");
+//							professorName = rs.getString("Professor");
+//							subjectYearName = rs.getString("subjectYear");
+//							subjectSemName = rs.getString("subjectSem");
+//							subjectDateName = rs.getString("subjectDate");
+//							subjectStartName = rs.getString("subjectStart");
+//							subjectEndName = rs.getString("subjectEnd");
+//							subjectRoomName = rs.getString("room");
 							
 							inputSubject = subjectTextField.getText();
 							inputProfessor = professorTextField.getText();
@@ -278,7 +322,7 @@ public class ModSubjectUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ModSubjectUI frame = new ModSubjectUI();
+					ModSubjectUI frame = new ModSubjectUI(subjectBtnName);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
