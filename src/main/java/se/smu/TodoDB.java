@@ -1,7 +1,7 @@
 /**
  * title : TodoDB.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.0.0.
+ * version : 2.1.0.
  * since : 2018 - 05 - 07
  * brief : TodoDB 클래스
  * -----------------------------------
@@ -10,7 +10,8 @@
  *   김한동       0.0.0.   2018-05-18                      초안 작성
  *   김한동       1.0.0.   2018-05-22             DBConn USE UserDB String 값 대체
  *   김한동       1.0.1.   2018-05-23      DB 직접 접속 후 Table로 접근, 불필요한 스캐너 import 삭제
- *   김한동       2.0.0.   2018-05-25          Table 접근 시 발생하는 문제 해결
+ *   김한동       2.0.0.   2018-05-25              Table 접근 시 발생하는 문제 해결
+ *   김한동       2.1.0.   2018-05-29                   미일치하는 변수 수정
  * -----------------------------------
  */
 
@@ -48,7 +49,7 @@ public class TodoDB {
 				sQl = "USE TodoDB";
 				st.execute(sQl);
 				sQl = "CREATE TABLE TodoData"
-						+ "(TodoName char(20) NOT NULL PRIMARY KEY, Subject char(20) NOT NULL, "
+						+ "(TodoName char(20) NOT NULL, Subject char(20) NOT NULL PRIMARY KEY, "
 						+ "DeadLineYear int(5) NOT NULL, DeadLineMonth int(5) NOT NULL, DeadLineDay int(5) NOT NULL, "
 						+ "EndYear int(5) NOT NULL, EndMonth int(5) NOT NULL, EndDay int(5) NOT NULL, "
 						+ "CompleteRate int(5) NOT NULL, ImportantRate int(5), AlarmCheck int(5) NOT NULL)";
@@ -59,7 +60,7 @@ public class TodoDB {
 				sQl = "USE TodoDB";
 				st.execute(sQl);
 				
-				sQl = "INSERT INTO TodoData(TodoName, Subject, DeadLineYear, DeadLineMonth, DeadLineDay, EndYear, EndMonth, EndDay, CompleteRate, ImportanceRate, AlarmCheck) "
+				sQl = "INSERT INTO TodoData(TodoName, Subject, DeadLineYear, DeadLineMonth, DeadLineDay, EndYear, EndMonth, EndDay, CompleteRate, ImportantRate, AlarmCheck) "
 						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				pst = cOnn.prepareStatement(sQl);
 				
