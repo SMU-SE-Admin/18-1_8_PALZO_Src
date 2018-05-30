@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.1.0.
+ * version : 3.2.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -15,6 +15,7 @@
  *   김한동       2.1.2.   2018-05-25                                           DB 연결 변수를 전역변수에서 지역변수로 변경
  *   김한동       3.0.0.   2018-05-25                                   NULL 입력값에 대한 예외처리, 중복확인 필요 UI 주석 메세지 추가
  *   김한동       3.1.0.   2018-05-30                                   ID, PW, Email NULL 입력에 대한 예외처리 및 알림 메세지 추가
+ *   김한동       3.2.0.   2018-05-30                                                  회원가입 성공 메세지 출력
  * -----------------------------------
  */
 
@@ -257,9 +258,8 @@ public class RegiUserUI extends JFrame {
 						userDB.UserData(InputID, InputPassword, InputEmail);
 						//회원가입 성공 테스트
 						//System.out.println("Join Success");
-				
-						LoginUI backToLogin = new LoginUI();
-						backToLogin.setVisible(true);
+						WelcomeMessageUI joinSuccess = new WelcomeMessageUI();
+						joinSuccess.setVisible(true);
 						dispose();
 					}
 				//}
