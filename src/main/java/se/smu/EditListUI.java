@@ -10,6 +10,7 @@
  *   æ»µø¡÷       0.0.0.   2018-05-22                      √ æ» ¿€º∫
  *   ±Ë«—µø       1.0.0.   2018-05-25                  ∆–≈∞¡ˆ √ﬂ∞°, ¡÷ºÆ ¿€º∫
  *   ±Ë«—µø       2.0.0.   2018-05-29          textpane ∫Œ∫– label∑Œ ºˆ¡§, ±‚¥… ±∏«ˆ
+ *   ±Ë«—µø       2.1.0.   2018-05-30            ±‚¡∏ «◊∏Ò¿« ¡§∫∏∏¶ ¿–æÓµÈ¿Ã¥¬ ∫Œ∫– √ﬂ∞°
  * -----------------------------------
  */
 
@@ -107,7 +108,7 @@ public class EditListUI extends JFrame {
 			rs = st.executeQuery("SELECT * FROM TodoData");
 			
 			while(rs.next()) {
-				todoName = rs.getString("Subject");
+				todoName = rs.getString("TodoName");
 				if(todoName.equals(todoBtnName)) {
 					subjectName = rs.getString("Subject");
 					deadLineYear = Integer.parseInt(rs.getString("DeadLineYear"));
@@ -119,6 +120,7 @@ public class EditListUI extends JFrame {
 					completeRate = Integer.parseInt(rs.getString("CompleteRate"));
 					importantRate = Integer.parseInt(rs.getString("ImportantRate"));
 					alarmCheck = Integer.parseInt(rs.getString("AlarmCheck"));
+
 				}
 			}
 
@@ -127,13 +129,20 @@ public class EditListUI extends JFrame {
 		} catch(ClassNotFoundException | SQLException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		textField = new JTextField();
 		textField.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		textField.setText(todoBtnName);
 		textField.setBounds(250, 120, 210, 25);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
+		textField_2.setText(subjectName);
+		textField_2.setBounds(250, 160, 210, 30);
+		contentPane.add(textField_2);
+		textField_2.setColumns(10);
 		
 		JLabel txtrTt = new JLabel();
 		txtrTt.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
@@ -179,6 +188,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"\u2606\u2606\u2606\u2606\u2606", "\u2605\u2606\u2606\u2606\u2606", "\u2605\u2605\u2606\u2606\u2606", "\u2605\u2605\u2605\u2606\u2606", "\u2605\u2605\u2605\u2605\u2606", "\u2605\u2605\u2605\u2605\u2605"}));
+		comboBox.setSelectedIndex(completeRate/2);
 		comboBox.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox.setBackground(Color.WHITE);
 		comboBox.setBounds(250, 280, 135, 24);
@@ -186,6 +196,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"\u2606\u2606\u2606\u2606\u2606", "\u2605\u2606\u2606\u2606\u2606", "\u2605\u2605\u2606\u2606\u2606", "\u2605\u2605\u2605\u2606\u2606", "\u2605\u2605\u2605\u2605\u2606", "\u2605\u2605\u2605\u2605\u2605"}));
+		comboBox.setSelectedIndex(importantRate/2);
 		comboBox_1.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_1.setBackground(Color.WHITE);
 		comboBox_1.setBounds(250, 320, 135, 24);
@@ -193,6 +204,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_2 = new JComboBox();
 		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"\uC788\uC74C", "\uC5C6\uC74C"}));
+		comboBox_2.setSelectedIndex(alarmCheck);
 		comboBox_2.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_2.setBackground(Color.WHITE);
 		comboBox_2.setBounds(250, 360, 60, 24);
@@ -223,6 +235,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_3 = new JComboBox();
 		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"2018", "2019", "2020", "2021", "2022"}));
+		comboBox_3.setSelectedIndex(deadLineYear-2018);
 		comboBox_3.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_3.setBackground(Color.WHITE);
 		comboBox_3.setBounds(250, 200, 60, 30);
@@ -230,6 +243,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_4 = new JComboBox();
 		comboBox_4.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+		comboBox_4.setSelectedIndex(deadLineMonth-1);
 		comboBox_4.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_4.setBackground(Color.WHITE);
 		comboBox_4.setBounds(340, 200, 45, 30);
@@ -237,6 +251,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_5 = new JComboBox();
 		comboBox_5.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		comboBox_5.setSelectedIndex(deadLineDay-1);
 		comboBox_5.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_5.setBackground(Color.WHITE);
 		comboBox_5.setBounds(415, 200, 45, 30);
@@ -262,6 +277,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_6 = new JComboBox();
 		comboBox_6.setModel(new DefaultComboBoxModel(new String[] {"2018", "2019", "2020", "2021", "2022"}));
+		comboBox_6.setSelectedIndex(endYear-2018);
 		comboBox_6.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_6.setBackground(Color.WHITE);
 		comboBox_6.setBounds(250, 240, 60, 30);
@@ -275,6 +291,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_7 = new JComboBox();
 		comboBox_7.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+		comboBox_7.setSelectedIndex(endMonth-1);
 		comboBox_7.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_7.setBackground(Color.WHITE);
 		comboBox_7.setBounds(340, 240, 45, 30);
@@ -288,6 +305,7 @@ public class EditListUI extends JFrame {
 		
 		JComboBox comboBox_8 = new JComboBox();
 		comboBox_8.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		comboBox_8.setSelectedIndex(endDay-1);
 		comboBox_8.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
 		comboBox_8.setBackground(Color.WHITE);
 		comboBox_8.setBounds(415, 240, 45, 30);
@@ -299,12 +317,6 @@ public class EditListUI extends JFrame {
 		textArea_11.setBounds(470, 240, 30, 30);
 		contentPane.add(textArea_11);
 		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
-		textField_2.setText(subjectName);
-		textField_2.setBounds(250, 160, 210, 30);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
 		/*
 		JComboBox comboBox_9 = new JComboBox();
 		comboBox_9.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 15));
