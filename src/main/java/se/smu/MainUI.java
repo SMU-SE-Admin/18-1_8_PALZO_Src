@@ -1,7 +1,7 @@
 /**
  * title : MainUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.4.0.
+ * version : 3.5.0.
  * since : 2018 - 05 - 07
  * brief : Main UI 및 메소드 클래스
  * -----------------------------------
@@ -18,6 +18,7 @@
  *   김한동       3.2.0.   2018-05-29                                  반복문을 통해 데이터베이스에서 받아 과목 버튼 생성
  *   김한동       3.3.0.   2018-05-29                                  반복문을 통해 데이터베이스에서 받아 투두 버튼 생성
  *   김한동       3.4.0.   2018-05-30                                          todo항목 등록, 수정 기능 추가
+ *   김한동       3.5.0.   2018-05-30                                          to do 항목 정보 버튼명으로 표시
  * -----------------------------------
  */
 
@@ -85,11 +86,11 @@ public class MainUI extends JFrame {
 			public void run() {
 				try {
 					//MainUI 실험 시
-					MainUI frame = new MainUI();
-					frame.setVisible(true);
-					//실제 실행할 때
-					//LoginUI frame = new LoginUI();
+					//MainUI frame = new MainUI();
 					//frame.setVisible(true);
+					//실제 실행할 때
+					LoginUI frame = new LoginUI();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -301,15 +302,15 @@ public class MainUI extends JFrame {
 			//todo목록 진행 중
 			try {
 				String todoSubject;
-				int todoDeadLineYear;
-				int todoDeadLineMonth;
-				int todoDeadLineDay;
-				int todoEndYear;
-				int todoEndMonth;
-				int todoEndDay;
-				int todoComplete;
-				int todoImportant;
-				int todoAlarm;
+				String todoDeadLineYear;
+				String todoDeadLineMonth;
+				String todoDeadLineDay;
+				String todoEndYear;
+				String todoEndMonth;
+				String todoEndDay;
+				String todoComplete;
+				String todoImportant;
+				String todoAlarm;
 				
 				String sQl;
 				Connection cOnn = null;
@@ -328,17 +329,28 @@ public class MainUI extends JFrame {
 				
 				while(rs.next()) {
 					todoBtnName = rs.getString("TodoName");
+					todoSubject = rs.getString("Subject");
+					todoDeadLineYear = rs.getString("DeadLineYear");
+					todoDeadLineMonth = rs.getString("DeadLineMonth");
+					todoDeadLineDay = rs.getString("DeadLineDay");
+					todoEndYear = rs.getString("EndYear");
+					todoEndMonth = rs.getString("EndMonth");
+					todoEndDay = rs.getString("EndDay");
 
 					//과목 버튼 생성
 					JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
 					ToDoBtn1.setBackground(Color.WHITE);
-					ToDoBtn1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+					ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+					ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+							"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+							"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
 					ToDoBtn1.setBounds(200, 100+changePosition, 600, 60);
 					changePosition+=60;
 					ContentBtn.add(ToDoBtn1);
 					ToDoBtn1.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							String buttonName  =arg0.getSource().toString().split("text=")[1].split(",")[0];
+							String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+							System.out.println(buttonName);
 							EditListUI editList = new EditListUI(buttonName);
 							editList.setVisible(true);
 							dispose();
