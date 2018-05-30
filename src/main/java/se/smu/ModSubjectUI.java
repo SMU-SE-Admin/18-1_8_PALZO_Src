@@ -1,7 +1,7 @@
 /**
  * title : ModSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.2.1.
+ * version : 3.2.2.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 수정 UI
  * -----------------------------------
@@ -14,6 +14,7 @@
  *   김한동       3.1.0.   2018-05-29          기존 저장된 과목명을 통해 과목을 확인하고 수정할 수 있는 기능 구현
  *   김한동       3.2.0.   2018-05-29                       삭제 버튼 및 기능 추가
  *   김한동       3.2.1.   2018-05-29               과목 삭제 시 해당 todo도 삭제되는 부분 주석 추가
+ *   김한동       3.2.2.   2018-05-30                   과목 삭제 메세지 출력, todo 삭제 주석 삭제
  * -----------------------------------
  */
 
@@ -292,7 +293,7 @@ public class ModSubjectUI extends JFrame {
 							st.execute(sQl);
 						}
 					}
-					//To do도 같이 삭제될 수 있도록 추가
+
 					rs.close();
 					st.close();
 				} catch(ClassNotFoundException | SQLException e1) {
@@ -321,28 +322,35 @@ public class ModSubjectUI extends JFrame {
 						rs = st.executeQuery("SELECT * FROM SubjectData");
 						
 						while(rs.next()) {
+							subjectName = rs.getString("Subject");
+							if(subjectName.equals(subjectBtnName)) {
+								inputSubject = subjectTextField.getText();
+								inputProfessor = professorTextField.getText();
+								inputSubjectYear = yearTextField.getText();
+								inputSubjectSem = semTextField.getText();
+								inputSubjectDate = subjectDateTextField.getText();
+								inputSubjectStart = startTextField.getText();
+								inputSubjectEnd = endTextField.getText();
+								inputSubjectRoom = roomTextField.getText();
+								
+								if(inputProfessor.length() == 0 || inputSubjectYear.length() == 0 || inputSubjectSem.length() == 0 || inputSubjectDate.length() == 0 || inputSubjectStart.length() == 0 || inputSubjectEnd.length() == 0 || inputSubjectRoom.length() == 0) {
+										ReEnterRequest noNull = new ReEnterRequest();
+										noNull.setVisible(true);
+										dispose();
+										MainUI reEnterThing = new MainUI();
+										reEnterThing.setVisible(true);
+								}
+								else 
+									new ModSubjectActive(inputSubject, inputProfessor, inputSubjectYear, inputSubjectSem, inputSubjectDate, inputSubjectStart, inputSubjectEnd, inputSubjectRoom);
 							
-							inputSubject = subjectTextField.getText();
-							inputProfessor = professorTextField.getText();
-							inputSubjectYear = yearTextField.getText();
-							inputSubjectSem = semTextField.getText();
-							inputSubjectDate = subjectDateTextField.getText();
-							inputSubjectStart = startTextField.getText();
-							inputSubjectEnd = endTextField.getText();
-							inputSubjectRoom = roomTextField.getText();
-							
-							new ModSubjectActive(inputSubject, inputProfessor, inputSubjectYear, inputSubjectSem, inputSubjectDate, inputSubjectStart, inputSubjectEnd, inputSubjectRoom);
-							
-							rs.close();
-							st.close();
+//							rs.close();
+//							st.close();
 														
 						}
-				} catch(ClassNotFoundException | SQLException e1) {
+				}
+				}catch(ClassNotFoundException | SQLException e1) {
 					e1.printStackTrace();
 				}
-				MainUI successMessage = new MainUI();
-				successMessage.setVisible(true);
-				dispose();
 			}
 		});
 		
@@ -353,9 +361,8 @@ public class ModSubjectUI extends JFrame {
 				dispose();
 			}
 		});
-		
+
 	}
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
