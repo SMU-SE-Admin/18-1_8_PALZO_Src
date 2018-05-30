@@ -13,6 +13,7 @@
  *   김한동       1.0.1.   2018-05-23                                             미사용 DB 변수 삭제
  *   김한동       2.0.0.   2018-05-24                                          DB 및 연결자 변경에 따른 수정
  *   김한동       2.1.0.   2018-05-25                                      DB 연결자를 전역변수에서 지역변수로 변경
+ *   김한동       2.2.0.   2018-05-30                                          NULL 입력에 대한 예외처리
  * -----------------------------------
  */
 
@@ -56,6 +57,7 @@ public class LoginUI extends JFrame {
 	private JTextField idField;
 
 	public LoginUI() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
@@ -139,20 +141,18 @@ public class LoginUI extends JFrame {
 							Password = rs.getString("Password");
 				}
 					
-				if(InputID.equals(ID) && (InputPassword.equals(Password))) {
-					pass = true;
-					MainUI frame = new MainUI();
+				if(InputID.length() == 0 || InputPassword.length() == 0) {
+					//pass = true;
+					ReEnterRequest frame = new ReEnterRequest();
 					frame.setVisible(true);
 					dispose();
 				}
 				else {
-					pass = false;
-					IdError frame = new IdError();
+					//pass = false;
+					MainUI frame = new MainUI();
 					frame.setVisible(true);
 					dispose();
 				}
-					
-				//System.out.println("Login" + pass);
 					
 				rs.close();
 				st.close();
