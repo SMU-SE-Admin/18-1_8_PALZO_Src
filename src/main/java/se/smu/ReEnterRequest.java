@@ -1,7 +1,7 @@
 /**
  * title : ReEnterRequest.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.0.0.
+ * version : 2.1.0.
  * since : 2018 - 05 - 07
  * brief : 빈 칸 에러 메세지 출력 UI
  * -----------------------------------
@@ -10,6 +10,7 @@
  *   안동주       0.0.0.   2018-05-22                      초안 작성
  *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
  *   김한동       2.0.0.   2018-05-25                    닫기버튼 활성화
+ *   김한동       2.1.0.   2018-05-26             Textpane 부분 JLabel로 변경
  * -----------------------------------
  */
 
@@ -25,8 +26,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextPane;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 
 public class ReEnterRequest extends JFrame {
@@ -42,7 +43,7 @@ public class ReEnterRequest extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		JTextPane textPane = new JTextPane();
+		JLabel textPane = new JLabel();
 		textPane.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		textPane.setText("\uC591\uC2DD\uC744 \uBAA8\uB450 \uC785\uB825\uD574\uC8FC\uC2ED\uC2DC\uC624");
 		textPane.setBounds(114, 85, 268, 54);
