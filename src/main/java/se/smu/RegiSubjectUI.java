@@ -1,7 +1,7 @@
 /**
  * title : RegiSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.1.
+ * version : 3.1.0.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 등록 UI
  * -----------------------------------
@@ -14,6 +14,7 @@
  *   김한동       2.2.0.   2018-05-28                  과목 등록 성공 버튼 추가
  *   김한동       3.0.0.   2018-05-29                    불필요한 주석 정리
  *   김한동       3.0.1.   2018-05-29                    불필요한 변수 정리
+ *   김한동       3.1.0.   2018-05-30                  과목 중복확인 기능 삭제
  * -----------------------------------
  */
 
@@ -75,13 +76,13 @@ public class RegiSubjectUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
-		
+		/*
 		JButton checkSubjectButton = new JButton("\uC911\uBCF5\uD655\uC778");
 		checkSubjectButton.setForeground(Color.WHITE);
 		checkSubjectButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		checkSubjectButton.setBackground(Color.DARK_GRAY);
 		checkSubjectButton.setBounds(430, 90, 100, 30);
-		contentPane.add(checkSubjectButton);
+		contentPane.add(checkSubjectButton);*/
 		
 		JButton regiButton = new JButton("\uB4F1\uB85D");
 		regiButton.setBackground(Color.DARK_GRAY);
@@ -198,7 +199,14 @@ public class RegiSubjectUI extends JFrame {
 		roomTextField.setColumns(10);
 		roomTextField.setBounds(150, 250, 56, 24);
 		contentPane.add(roomTextField);
-		
+		/* 강의 요일 콤보 박스
+		 JComboBox comboBox = new JComboBox();
+         comboBox.setModel(new DefaultComboBoxModel(new String[] {"\uC6D4\uC694\uC77C", "\uD654\uC694\uC77C", "\uC218\uC694\uC77C", "\uBAA9\uC694\uC77C", "\uAE08\uC694\uC77C", "\uD1A0\uC694\uC77C", "\uC77C\uC694\uC77C"}));
+         comboBox.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+         comboBox.setBounds(150, 210, 80, 30);
+         contentPane.add(comboBox); */
+         
+		// 강의 요일 텍스트 필드
 		subjectDateTextField = new JTextField();
 		subjectDateTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		subjectDateTextField.setBounds(150, 210, 80, 30);
@@ -213,7 +221,7 @@ public class RegiSubjectUI extends JFrame {
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("맑은 고딕", Font.PLAIN, 35));
 		panel.add(label);
-		
+		/*
 		checkSubjectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -236,15 +244,15 @@ public class RegiSubjectUI extends JFrame {
 						subjectCheck = rs.getString("Subject");
 					
 					if(InputSubject.length() == 0) {
-						ReEnterRequest noNull = new ReEnterRequest();
-						noNull.setVisible(true);
+						//ReEnterRequest noNull = new ReEnterRequest();
+						//noNull.setVisible(true);
 					}
 					
 					else {
 						if(InputSubject.equals(subjectCheck)) {
-							NameOverlap usedSubject = new NameOverlap();
-							usedSubject.setVisible(true);
-							dispose();
+							//NameOverlap usedSubject = new NameOverlap();
+							//usedSubject.setVisible(true);
+							//dispose();
 						}
 						
 						else {
@@ -258,7 +266,7 @@ public class RegiSubjectUI extends JFrame {
 					e1.printStackTrace();
 				}
 			}
-		});
+		}); */
 		
 		regiButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -272,7 +280,7 @@ public class RegiSubjectUI extends JFrame {
 				InputRoom = roomTextField.getText();
 				
 				//입력값 중 null값이 없을 경우 과목을 데이터베이스에 등록하고 메인화면으로 돌아감
-				if(InputSubject.length() == 0 | InputProfessor.length() == 0 | InputSubjectYear.length() == 0 | InputSubjectSem.length() == 0 | InputSubjectStart.length() == 0 | InputSubjectEnd.length() == 0 | InputRoom.length() == 0 ) {
+				if(InputSubject.length() == 0 || InputProfessor.length() == 0 || InputSubjectYear.length() == 0 || InputSubjectSem.length() == 0 || InputSubjectStart.length() == 0 || InputSubjectEnd.length() == 0 || InputRoom.length() == 0 ) {
 					ReEnterRequest noNull = new ReEnterRequest();
 					noNull.setVisible(true);
 				}
