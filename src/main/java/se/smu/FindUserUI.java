@@ -1,7 +1,7 @@
 /**
  * title : FindUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 3.2.0.
  * since : 2018 - 05 - 07
  * brief : ID, PW 찾기 UI 및 메소드 클래스
  * -----------------------------------
@@ -13,6 +13,8 @@
  *   김한동        2.0.0.   2018-05-25         ID, 비밀번호 찾기 완료 후 로그인 UI로 돌아오는 기능 추가
  *   김한동        2.1.0.   2018-05-25					의미없는 DB 연결 변수 삭제
  *   김한동        3.0.0.   2018-05-25                   NULL 입력에 대한 예외처리
+ *   김한동        3.1.0.   2018-05-30                 NULL 값에 대한 메세지 출력 추가
+ *   김한동        3.2.0.   2018-05-30       Email 전송 성공 메세지 출력, 예외 발생 시 메세지, 처리문 추가
  * -----------------------------------
  */
 
@@ -38,9 +40,9 @@ import javax.swing.JLabel;
 
 public class FindUserUI extends JFrame {
 
-	static String ID;
-	static String Password;
-	static String Email;
+//	static String ID;
+//	static String Password;
+	static String emailCheck;
 	static String InputEmail;
 
 	private JPanel contentPane;
@@ -100,11 +102,44 @@ public class FindUserUI extends JFrame {
 				}
 				
 				else {
-					new FindMail(InputEmail);
-					//"메일이 발송되었습니다." UI 추가될 경우 추가
-					LoginUI endFind = new LoginUI();
-					endFind.setVisible(true);
-					dispose();
+					try {
+						InputEmail = textField.getText();
+						String sQl;
+						Connection cOnn = null;
+						Statement st = null;
+						ResultSet rs = null;
+						
+						Class.forName(DBConn.forName);
+						cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+						
+						st = cOnn.createStatement();
+						sQl = "USE UserDB";
+						st.execute(sQl);
+						rs = st.executeQuery("SELECT Email FROM UserData");
+						
+						while(rs.next()) {
+							emailCheck = rs.getString("Email");
+							if(InputEmail.equals(emailCheck))
+								break;
+						}
+
+						if(InputEmail.equals(emailCheck)) {
+							new FindMail(InputEmail);
+							EmailSendingSuccessUI successEmail = new EmailSendingSuccessUI();
+							successEmail.setVisible(true);
+							dispose();
+						}
+						else {
+							InputTypeErrorUI typeError = new InputTypeErrorUI();
+							typeError.setVisible(true);
+							dispose();
+						}
+						
+						rs.close();
+						st.close();
+					} catch(ClassNotFoundException | SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
