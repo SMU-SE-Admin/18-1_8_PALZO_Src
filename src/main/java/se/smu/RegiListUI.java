@@ -1,7 +1,7 @@
 /**
  * title : RegiListUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.1.0.
+ * version : 2.0.0.
  * since : 2018 - 05 - 07
  * brief : 투두 항목 등록 UI
  * -----------------------------------
@@ -10,6 +10,7 @@
  *   안동주       0.0.0.   2018-05-22                      초안 작성
  *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
  *   김한동       1.1.0.   2018-05-29                  등록 및 취소 버튼 활성화
+ *   김한동       2.0.0.   2018-06-01                NULL, 특수문자 예외처리
  * -----------------------------------
  */
 
@@ -319,10 +320,10 @@ public class RegiListUI extends JFrame {
 			AlarmCheck = comboBox_2.getSelectedIndex();
 			
 //			//입력값 중 null값이 없을 경우 과목을 데이터베이스에 등록하고 메인화면으로 돌아감
-//			if(InputSubject.length() == 0 | InputProfessor.length() == 0 | InputSubjectYear.length() == 0 | InputSubjectSem.length() == 0 | InputSubjectStart.length() == 0 | InputSubjectEnd.length() == 0 | InputRoom.length() == 0 ) {
-//				ReEnterRequest noNull = new ReEnterRequest();
-//				noNull.setVisible(true);
-//			}
+			if(TodoName.length() == 0 || Subject.length() == 0) {
+				ReEnterRequest noNull = new ReEnterRequest();
+				noNull.setVisible(true);
+			}
 //			else {
 //				// 학기가 1~4, 시간이 0~24시 범위안에 없을 경우, 시작시간이 종료시간보다 빠른 경우 예외처리
 //				if((Integer.parseInt(InputSubjectSem) < 1 || Integer.parseInt(InputSubjectSem) > 4) ||
@@ -333,20 +334,26 @@ public class RegiListUI extends JFrame {
 //					typeError.setVisible(true);
 //					dispose();
 //				}
-//				else {
-					TodoDB todoDB = new TodoDB();
-					todoDB.TodoData(TodoName, Subject, DeadLineYear+2018, DeadLineMonth+1, DeadLineDay+1, EndYear+2018, EndMonth+1, EndDay+1, CompleteRate*2, ImportantRate*2, AlarmCheck);
-
-					//RegiSuccess successMessage = new RegiSuccess();
-					//successMessage.setVisible(true);
-					//dispose();
-					
-					MainUI backToMain = new MainUI();
-					backToMain.setVisible(true);
-					dispose();
+				else {
+					if(TodoName.contains("\\") || TodoName.contains(":") || TodoName.contains(";") || TodoName.contains("|") || TodoName.contains("<") || TodoName.contains(",") || TodoName.contains("?") || TodoName.contains("\"") || TodoName.contains("'")) {
+						InputTypeErrorUI noNull = new InputTypeErrorUI();
+						noNull.setVisible(true);
+					}
+					else {
+						TodoDB todoDB = new TodoDB();
+						todoDB.TodoData(TodoName, Subject, DeadLineYear+2018, DeadLineMonth+1, DeadLineDay+1, EndYear+2018, EndMonth+1, EndDay+1, CompleteRate*2, ImportantRate*2, AlarmCheck);
+	
+						//RegiSuccess successMessage = new RegiSuccess();
+						//successMessage.setVisible(true);
+						//dispose();
+						
+						MainUI backToMain = new MainUI();
+						backToMain.setVisible(true);
+						dispose();
+					}
 				}
 			//}
-		//}
+		}
 	});
 		
 		/*과목선택 콤보박스
