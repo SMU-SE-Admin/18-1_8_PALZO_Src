@@ -295,16 +295,44 @@ public class RegiSubjectUI extends JFrame {
 						dispose();
 					}
 					else {
-						SubjectDB subjectDB = new SubjectDB();
-						subjectDB.SubjectData(InputSubject, InputProfessor, InputSubjectYear, InputSubjectSem, InputSubjectDate, InputSubjectStart, InputSubjectEnd, InputRoom);
-
-						//RegiSuccess successMessage = new RegiSuccess();
-						//successMessage.setVisible(true);
-						//dispose();
-						
-						MainUI backToMain = new MainUI();
-						backToMain.setVisible(true);
-						dispose();
+						try {
+							Connection cOnn = null;
+							String sQl;
+							Statement st = null;
+							ResultSet rs = null;
+							
+							String subjectCheck = null;
+							InputSubject = subjectTextField.getText();
+							
+							Class.forName(DBConn.forName);
+							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+							st = cOnn.createStatement();
+							sQl = "USE SubjectDB";
+							st.executeQuery(sQl);
+							rs = st.executeQuery("SELECT Subject FROM SubjectData WHERE Subject = '" + InputSubject + "'");
+							
+							while(rs.next())
+								subjectCheck = rs.getString("Subject");
+							
+							if(InputSubject.equals(subjectCheck)) {
+								NameOverlap usedSubject = new NameOverlap();
+								usedSubject.setVisible(true);
+								dispose();
+							}
+							else {
+							SubjectDB subjectDB = new SubjectDB();
+							subjectDB.SubjectData(InputSubject, InputProfessor, InputSubjectYear, InputSubjectSem, InputSubjectDate, InputSubjectStart, InputSubjectEnd, InputRoom);
+							
+							MainUI backToMain = new MainUI();
+							backToMain.setVisible(true);
+							dispose();
+							//RegiSuccess successMessage = new RegiSuccess();
+							//successMessage.setVisible(true);	
+							//dispose();
+							}
+						}catch(ClassNotFoundException | SQLException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 			}

@@ -1,7 +1,7 @@
 /**
  * title : NameOverlap.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 2.0.0.
  * since : 2018 - 05 - 07
  * brief : 과목 이름 중복 에러 메세지 UI
  * -----------------------------------
@@ -9,6 +9,7 @@
  *   author  version     date                          brief
  *   안동주       0.0.0.   2018-05-22                      초안 작성
  *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
+ *   김한동       2.0.0.   2018-05-31                   버튼 기능 활성화
  * -----------------------------------
  */
 
@@ -18,6 +19,8 @@ import se.smu.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -79,5 +82,12 @@ public class NameOverlap extends JFrame {
 		CancelBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		CancelBtn.setBounds(300, 180, 100, 30);
 		contentPane.add(CancelBtn);
+		CancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegiSubjectUI backToRegiSub = new RegiSubjectUI();
+				backToRegiSub.setVisible(true);
+				dispose();
+			}
+		});
 	}
 }
