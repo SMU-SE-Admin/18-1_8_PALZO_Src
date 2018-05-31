@@ -25,7 +25,7 @@ public class FindMail {
 	
 	public FindMail(String InputEmail) {
 		this.InputEmail = InputEmail;
-		
+
 		String ID = null;
 		String Password = null;
 		
@@ -42,7 +42,7 @@ public class FindMail {
 			st = cOnn.createStatement();
 			sQl = "USE UserDB";
 			st.execute(sQl);
-			mail_Check = ("SELECT ID, Password FROM UserData WHERE Email = '" + this.InputEmail + "'");
+			mail_Check = ("SELECT * FROM UserData WHERE Email = '" + this.InputEmail + "'");
 			rs = st.executeQuery(mail_Check);
 			
 			while(rs.next()) {
@@ -75,16 +75,16 @@ public class FindMail {
 		});
 		
 		try {
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("Palzo"));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress/*.parse*/(this.InputEmail));
-			message.setSubject("[Palzo] Todolist ID / PW 찾기 안내");
-			message.setText("안녕하세요! " + ID + "님\n" + "요청하신 ID/PW 찾기 결과입니다.\n"
-							+ "ID : " + ID + "\nPW : " + Password);
-			
-			Transport.send(message);
-			
-			//System.out.println("Mail Sending Success");
+
+				MimeMessage message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("Palzo"));
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress/*.parse*/(this.InputEmail));
+				message.setSubject("[Palzo] Todolist ID / PW 찾기 안내");
+				message.setText("안녕하세요! " + ID + "님\n" + "요청하신 ID/PW 찾기 결과입니다.\n"
+								+ "ID : " + ID + "\nPW : " + Password);
+				
+				Transport.send(message);
+				
 		} catch(MessagingException e) {
 			throw new RuntimeException(e);
 		}
@@ -93,5 +93,4 @@ public class FindMail {
 	public static void main(String[] args) {
 		new FindMail(InputEmail);
 	}
-
 }
