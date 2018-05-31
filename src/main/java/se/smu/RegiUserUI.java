@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.2.0.
+ * version : 4.0.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -16,6 +16,7 @@
  *   김한동       3.0.0.   2018-05-25                                   NULL 입력값에 대한 예외처리, 중복확인 필요 UI 주석 메세지 추가
  *   김한동       3.1.0.   2018-05-30                                   ID, PW, Email NULL 입력에 대한 예외처리 및 알림 메세지 추가
  *   김한동       3.2.0.   2018-05-30                                                  회원가입 성공 메세지 출력
+ *   김한동       4.0.0.   2018-05-31                                                  특수문자에 대한 예외처리
  * -----------------------------------
  */
 
@@ -179,10 +180,6 @@ public class RegiUserUI extends JFrame {
 							idOverLap.setVisible(true);
 							dispose();
 						}
-						else {
-							System.out.println("사용가능한 아이디입니다.");
-							//메세지 UI 구축 후 추가
-						}
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
 					e1.printStackTrace();
@@ -224,10 +221,6 @@ public class RegiUserUI extends JFrame {
 							emailOverLap.setVisible(true);
 							dispose();
 						}
-						else {
-							System.out.println("사용가능한 이메일입니다.");
-							//메세지 UI 구축 후 추가
-						}
 					}
 				} catch (ClassNotFoundException | SQLException e1) {
 					e1.printStackTrace();
@@ -249,18 +242,23 @@ public class RegiUserUI extends JFrame {
 					if(InputID.length() == 0 || InputPassword.length() == 0 || InputEmail.length() == 0) {
 						ReEnterRequest noNull = new ReEnterRequest();
 						noNull.setVisible(true);
+						dispose();
 					}
 					
 					else {
-
-						System.out.println(InputID + InputPassword + InputEmail);
-						UserDB userDB = new UserDB();
-						userDB.UserData(InputID, InputPassword, InputEmail);
-						//회원가입 성공 테스트
-						//System.out.println("Join Success");
-						WelcomeMessageUI joinSuccess = new WelcomeMessageUI();
-						joinSuccess.setVisible(true);
-						dispose();
+						if(InputID.contains("\\") || InputID.contains(":") || InputID.contains(";") || InputID.contains("|") || InputID.contains("<") || InputID.contains(",") || InputID.contains("?") || InputID.contains("\"") || InputID.contains("'")) {
+							ReEnterRequest noNull = new ReEnterRequest();
+							noNull.setVisible(true);
+						}
+						else {
+							UserDB userDB = new UserDB();
+							userDB.UserData(InputID, InputPassword, InputEmail);
+							//회원가입 성공 테스트
+							//System.out.println("Join Success");
+							WelcomeMessageUI joinSuccess = new WelcomeMessageUI();
+							joinSuccess.setVisible(true);
+							dispose();
+						}
 					}
 				//}
 			}
