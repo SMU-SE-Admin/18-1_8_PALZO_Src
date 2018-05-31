@@ -1,7 +1,7 @@
 /**
  * title : EditListUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.0.0.
+ * version : 3.0.0.
  * since : 2018 - 05 - 07
  * brief : 투두 항목 수정 UI
  * -----------------------------------
@@ -11,6 +11,8 @@
  *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
  *   김한동       2.0.0.   2018-05-29          textpane 부분 label로 수정, 기능 구현
  *   김한동       2.1.0.   2018-05-30            기존 항목의 정보를 읽어들이는 부분 추가
+ *   김한동       2.2.0.   2018-05-30                    삭제 기능 구현
+ *   김한동       3.0.0.   2018-06-01              NULL 및 특수문자에 대한 예외처리
  * -----------------------------------
  */
 
@@ -324,6 +326,7 @@ public class EditListUI extends JFrame {
 		comboBox_9.setBounds(250, 160, 210, 30);
 		contentPane.add(comboBox_9);
 		*/
+		
 		//삭제 버튼
 		JButton button_1 = new JButton("\uC0AD\uC81C");
 		button_1.setForeground(Color.WHITE);
@@ -331,6 +334,42 @@ public class EditListUI extends JFrame {
 		button_1.setBackground(Color.DARK_GRAY);
 		button_1.setBounds(500, 280, 100, 30);
 		contentPane.add(button_1);
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String sQl;					
+					Connection cOnn = null;
+					Statement st = null;
+					PreparedStatement pst = null;
+					ResultSet rs = null;
+					
+					Class.forName(DBConn.forName);
+					cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+					
+					st = cOnn.createStatement();
+					sQl = "USE TodoDB";
+					st.execute(sQl);
+					rs = st.executeQuery("SELECT * FROM TodoData");
+					
+					while(rs.next()) {
+						todoName = rs.getString("TodoName");
+					
+						if(todoBtnName.equals(todoName)) {
+							sQl = "DELETE FROM TodoData WHERE TodoName =" + "\'" + todoName + "\'";
+							st.execute(sQl);
+						}
+					}
+					
+					rs.close();
+					st.close();
+				} catch(ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+				MainUI backToMain = new MainUI();
+				backToMain.setVisible(true);
+				dispose();
+			}
+		});
 		
 		//변경 버튼
 		btnNewButton.addActionListener(new ActionListener() {
@@ -363,7 +402,24 @@ public class EditListUI extends JFrame {
 							inputimportantRate = comboBox.getSelectedIndex();
 							inputalarmCheck = comboBox_2.getSelectedIndex();
 							
-							new EditListActive(inputtodoName, inputsubjectName, inputdeadLineYear+2018, inputdeadLineMonth+1, inputdeadLineDay+1, inputendYear+2018, inputendMonth+1, inputendDay+1, inputcompleteRate*2, inputimportantRate*2, inputalarmCheck);
+							if(inputtodoName.length() == 0 || inputsubjectName.length() == 0) {
+								ReEnterRequest noNull = new ReEnterRequest();
+								noNull.setVisible(true);
+								dispose();
+							}
+							else {
+								if(inputtodoName.contains("\\") || inputtodoName.contains(":") || inputtodoName.contains(";") || inputtodoName.contains("|") || inputtodoName.contains("<") || inputtodoName.contains(",") || inputtodoName.contains("?") || inputtodoName.contains("\"") || inputtodoName.contains("'")) {
+									InputTypeErrorUI noNull = new InputTypeErrorUI();
+									noNull.setVisible(true);
+								}
+								else {
+									new EditListActive(inputtodoName, inputsubjectName, inputdeadLineYear+2018, inputdeadLineMonth+1, inputdeadLineDay+1, inputendYear+2018, inputendMonth+1, inputendDay+1, inputcompleteRate*2, inputimportantRate*2, inputalarmCheck);
+									MainUI successMessage = new MainUI();
+									successMessage.setVisible(true);
+									dispose();
+								}
+							}
+							
 							
 							rs.close();
 							st.close();
@@ -372,9 +428,6 @@ public class EditListUI extends JFrame {
 				} catch(ClassNotFoundException | SQLException e1) {
 					e1.printStackTrace();
 				}
-				MainUI successMessage = new MainUI();
-				successMessage.setVisible(true);
-				dispose();
 			}
 		});
 	}
