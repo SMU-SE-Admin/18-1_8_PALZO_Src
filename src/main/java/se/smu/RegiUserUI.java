@@ -1,7 +1,7 @@
 /**
  * title : RegiUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 4.0.0.
+ * version : 4.1.0.
  * since : 2018 - 05 - 07
  * brief : 회원가입 UI 및 메소드 클래스
  * -----------------------------------
@@ -17,6 +17,7 @@
  *   김한동       3.1.0.   2018-05-30                                   ID, PW, Email NULL 입력에 대한 예외처리 및 알림 메세지 추가
  *   김한동       3.2.0.   2018-05-30                                                  회원가입 성공 메세지 출력
  *   김한동       4.0.0.   2018-05-31                                                  특수문자에 대한 예외처리
+ *   김한동       4.1.0.   2018-06-01                                                  특수문자 알림 메세지 수정
  * -----------------------------------
  */
 
@@ -247,7 +248,7 @@ public class RegiUserUI extends JFrame {
 					
 					else {
 						if(InputID.contains("\\") || InputID.contains(":") || InputID.contains(";") || InputID.contains("|") || InputID.contains("<") || InputID.contains(",") || InputID.contains("?") || InputID.contains("\"") || InputID.contains("'")) {
-							ReEnterRequest noNull = new ReEnterRequest();
+							InputTypeErrorUI noNull = new InputTypeErrorUI();
 							noNull.setVisible(true);
 						}
 						else {
