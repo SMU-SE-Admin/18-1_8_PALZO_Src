@@ -1,7 +1,7 @@
 /**
  * title : ModSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.2.2.
+ * version : 4.0.0.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 수정 UI
  * -----------------------------------
@@ -15,6 +15,7 @@
  *   김한동       3.2.0.   2018-05-29                       삭제 버튼 및 기능 추가
  *   김한동       3.2.1.   2018-05-29               과목 삭제 시 해당 todo도 삭제되는 부분 주석 추가
  *   김한동       3.2.2.   2018-05-30                   과목 삭제 메세지 출력, todo 삭제 주석 삭제
+ *   김한동       4.0.0.   2018-06-01                       중복과목에 대한 처리
  * -----------------------------------
  */
 
@@ -340,12 +341,19 @@ public class ModSubjectUI extends JFrame {
 										MainUI reEnterThing = new MainUI();
 										reEnterThing.setVisible(true);
 								}
-								else 
-									new ModSubjectActive(inputSubject, inputProfessor, inputSubjectYear, inputSubjectSem, inputSubjectDate, inputSubjectStart, inputSubjectEnd, inputSubjectRoom);
-							
-//							rs.close();
-//							st.close();
-														
+								else {
+									if(inputSubject.equals(subjectName)) {
+										NameOverlap usedSubject = new NameOverlap();
+										usedSubject.setVisible(true);
+										dispose();
+									}
+									else {
+										new ModSubjectActive(inputSubject, inputProfessor, inputSubjectYear, inputSubjectSem, inputSubjectDate, inputSubjectStart, inputSubjectEnd, inputSubjectRoom);
+										MainUI reEnterThing = new MainUI();
+										reEnterThing.setVisible(true);
+										dispose();
+									}
+								}			
 						}
 				}
 				}catch(ClassNotFoundException | SQLException e1) {
