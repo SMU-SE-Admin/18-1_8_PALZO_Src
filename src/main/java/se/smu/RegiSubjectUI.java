@@ -1,7 +1,7 @@
 /**
  * title : RegiSubjectUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.1.0.
+ * version : 4.0.0.
  * since : 2018 - 05 - 07
  * brief : 과목 항목 등록 UI
  * -----------------------------------
@@ -14,7 +14,9 @@
  *   김한동       2.2.0.   2018-05-28                  과목 등록 성공 버튼 추가
  *   김한동       3.0.0.   2018-05-29                    불필요한 주석 정리
  *   김한동       3.0.1.   2018-05-29                    불필요한 변수 정리
- *   김한동       3.1.0.   2018-05-30                  과목 중복확인 기능 삭제
+ *   김한동       3.1.0.   2018-05-30                  과목 중복확인 버튼 삭제
+ *   김한동       4.0.0.   2018-05-31              중복된 과목 메세지 출력 및 예외처리
+ *   김한동       4.1.0.   2018-06-01                   #3130 결함 수정
  * -----------------------------------
  */
 
@@ -280,7 +282,7 @@ public class RegiSubjectUI extends JFrame {
 				InputRoom = roomTextField.getText();
 				
 				//입력값 중 null값이 없을 경우 과목을 데이터베이스에 등록하고 메인화면으로 돌아감
-				if(InputSubject.length() == 0 || InputProfessor.length() == 0 || InputSubjectYear.length() == 0 || InputSubjectSem.length() == 0 || InputSubjectStart.length() == 0 || InputSubjectEnd.length() == 0 || InputRoom.length() == 0 ) {
+				if(InputSubject.length() == 0 || InputProfessor.length() == 0 || InputSubjectYear.length() == 0 || InputSubjectSem.length() == 0 || InputSubjectDate.length() == 0 || InputSubjectStart.length() == 0 || InputSubjectEnd.length() == 0 || InputRoom.length() == 0 ) {
 					ReEnterRequest noNull = new ReEnterRequest();
 					noNull.setVisible(true);
 				}
@@ -320,12 +322,12 @@ public class RegiSubjectUI extends JFrame {
 								dispose();
 							}
 							else {
-							SubjectDB subjectDB = new SubjectDB();
-							subjectDB.SubjectData(InputSubject, InputProfessor, InputSubjectYear, InputSubjectSem, InputSubjectDate, InputSubjectStart, InputSubjectEnd, InputRoom);
-							
-							MainUI backToMain = new MainUI();
-							backToMain.setVisible(true);
-							dispose();
+								SubjectDB subjectDB = new SubjectDB();
+								subjectDB.SubjectData(InputSubject, InputProfessor, InputSubjectYear, InputSubjectSem, InputSubjectDate, InputSubjectStart, InputSubjectEnd, InputRoom);
+								
+								MainUI backToMain = new MainUI();
+								backToMain.setVisible(true);
+								dispose();
 							//RegiSuccess successMessage = new RegiSuccess();
 							//successMessage.setVisible(true);	
 							//dispose();
