@@ -104,7 +104,6 @@ public class MainUI extends JFrame {
 		});
 	}
 
-
 	public MainUI() {
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setBounds(100, 100, 850, 600);
