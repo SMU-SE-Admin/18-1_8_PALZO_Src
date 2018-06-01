@@ -1,7 +1,7 @@
 /**
  * title : LoginUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 4.0.0.
  * since : 2018 - 05 - 07
  * brief : Login UI 및 메소드 클래스
  * -----------------------------------
@@ -14,7 +14,8 @@
  *   김한동       2.0.0.   2018-05-24                                          DB 및 연결자 변경에 따른 수정
  *   김한동       2.1.0.   2018-05-25                                      DB 연결자를 전역변수에서 지역변수로 변경
  *   김한동       2.2.0.   2018-05-30                                          NULL 입력에 대한 예외처리
- *   김한동       3.0.0.   2018-05-31                                            로그인 기능 오류 해결
+ *   김한동       3.0.0.   2018-05-31                                        #3030 결함 수정, 주석 내용 수정
+ *   김한동       4.0.0.   2018-06-01                                                최종본 작성
  * -----------------------------------
  */
 
@@ -140,21 +141,31 @@ public class LoginUI extends JFrame {
 						while(rs.next()) {
 							ID = rs.getString("ID");
 							Password = rs.getString("Password");
-				}
-					
-				if(InputID.length() == 0 || InputPassword.length() == 0) {
-					//pass = true;
-					ReEnterRequest frame = new ReEnterRequest();
-					frame.setVisible(true);
-					dispose();
-				}
-				else {
-					//pass = false;
-					MainUI frame = new MainUI();
-					frame.setVisible(true);
-					dispose();
-				}
-					
+						}
+				
+							if(InputID.length() == 0 || InputPassword.length() == 0) {
+								//pass = true;
+								ReEnterRequest frame = new ReEnterRequest();
+								frame.setVisible(true);
+							}
+							else {
+								if(InputID.equals(ID)) {
+									//pass = false;
+																	
+									MainUI frame = new MainUI();
+									frame.setVisible(true);
+									dispose();
+									
+									CheckAlarmUI ca = new CheckAlarmUI();
+									ca.setVisible(true);
+								}
+								else {								
+									IdError wrongID = new IdError();
+									wrongID.setVisible(true);
+									dispose();
+								}
+						}
+
 				rs.close();
 				st.close();
 			} catch (ClassNotFoundException | SQLException e1) {
