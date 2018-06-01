@@ -1,7 +1,7 @@
 /**
  * title : EditListUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.0.0.
+ * version : 4.0.0.
  * since : 2018 - 05 - 07
  * brief : 투두 항목 수정 UI
  * -----------------------------------
@@ -13,6 +13,8 @@
  *   김한동       2.1.0.   2018-05-30            기존 항목의 정보를 읽어들이는 부분 추가
  *   김한동       2.2.0.   2018-05-30                    삭제 기능 구현
  *   김한동       3.0.0.   2018-06-01              NULL 및 특수문자에 대한 예외처리
+ *   김한동       3.1.0.   2018-06-01      to do 항목 수정하지 못하도록 처리, 완료도 표시 항목 수정
+ *   김한동       4.0.0.   2018-06-01                     최종본 작성
  * -----------------------------------
  */
 
@@ -71,7 +73,7 @@ public class EditListUI extends JFrame {
 	static int inputalarmCheck;
 	
 	private JPanel contentPane;
-	private JTextField textField;
+//	private JTextField textField;
 	private JTextField textField_2;
 
 	public EditListUI(String todoBtnName) {
@@ -132,12 +134,12 @@ public class EditListUI extends JFrame {
 			e1.printStackTrace();
 		}
 
-		textField = new JTextField();
+		JLabel textField = new JLabel();
 		textField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		textField.setText(todoBtnName);
 		textField.setBounds(250, 120, 210, 25);
 		contentPane.add(textField);
-		textField.setColumns(10);
+//		textField.setColumns(10);
 		
 		textField_2 = new JTextField();
 		textField_2.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
@@ -188,17 +190,19 @@ public class EditListUI extends JFrame {
 		textArea_6.setBounds(100, 360, 109, 24);
 		contentPane.add(textArea_6);
 		
+		//중요도 콤보박스
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"\u2606\u2606\u2606\u2606\u2606", "\u2605\u2606\u2606\u2606\u2606", "\u2605\u2605\u2606\u2606\u2606", "\u2605\u2605\u2605\u2606\u2606", "\u2605\u2605\u2605\u2605\u2606", "\u2605\u2605\u2605\u2605\u2605"}));
-		comboBox.setSelectedIndex(completeRate/2);
+		comboBox.setSelectedIndex(importantRate/2);
 		comboBox.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		comboBox.setBackground(Color.WHITE);
 		comboBox.setBounds(250, 280, 135, 24);
 		contentPane.add(comboBox);
 		
+		//완료도 콤보박스
 		JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"\u2606\u2606\u2606\u2606\u2606", "\u2605\u2606\u2606\u2606\u2606", "\u2605\u2605\u2606\u2606\u2606", "\u2605\u2605\u2605\u2606\u2606", "\u2605\u2605\u2605\u2605\u2606", "\u2605\u2605\u2605\u2605\u2605"}));
-		comboBox.setSelectedIndex(importantRate/2);
+		comboBox_1.setSelectedIndex(completeRate/2);
 		comboBox_1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		comboBox_1.setBackground(Color.WHITE);
 		comboBox_1.setBounds(250, 320, 135, 24);

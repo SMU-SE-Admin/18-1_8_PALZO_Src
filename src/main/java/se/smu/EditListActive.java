@@ -1,13 +1,14 @@
 /**
  * title : EditListActive.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 0.0.0.
+ * version : 1.0.0.
  * since : 2018 - 05 - 07
  * brief : to do 항목 수정 실제 실행 클래스
  * -----------------------------------
  * history
  *   author  version     date                          brief
  *   김한동       0.0.0.    2018-05-30                     초안 작성
+ *   김한동       1.0.0.    2018-06-01                     최종본 작성
  * -----------------------------------
  */
 
