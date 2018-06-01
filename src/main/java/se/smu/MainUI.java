@@ -1,7 +1,7 @@
 /**
  * title : MainUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 3.6.0.
+ * version : 4.0.0.
  * since : 2018 - 05 - 07
  * brief : Main UI 및 메소드 클래스
  * -----------------------------------
@@ -21,6 +21,8 @@
  *   김한동       3.5.0.   2018-05-30                                        to do 항목 정보 버튼명으로 표시
  *   김한동       3.6.0.   2018-05-30                                           완료항목 표시 기능 활성화
  *   김한동       3.7.0.   2018-06-01                                                정렬기능 구현
+ *   김한동       4.0.0.   2018-06-01                                                 최종본 작성
+ *   
  * -----------------------------------
  */
 
@@ -91,11 +93,11 @@ public class MainUI extends JFrame {
 			public void run() {
 				try {
 					//MainUI 실험 시
-					//MainUI frame = new MainUI();
-					//frame.setVisible(true);
-					//실제 실행할 때
-					LoginUI frame = new LoginUI();
+					MainUI frame = new MainUI();
 					frame.setVisible(true);
+					//실제 실행할 때
+					//LoginUI frame = new LoginUI();
+					//frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -207,7 +209,73 @@ public class MainUI extends JFrame {
 						st = cOnn.createStatement();
 						sQl = "USE TodoDB";
 						st.execute(sQl);
-						rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate LIKE '10'");
+						rs = st.executeQuery("SELECT * FROM TodoData");
+						
+						while(rs.next()) {
+							todoBtnName = rs.getString("TodoName");
+							todoSubject = rs.getString("Subject");
+							todoDeadLineYear = rs.getString("DeadLineYear");
+							todoDeadLineMonth = rs.getString("DeadLineMonth");
+							todoDeadLineDay = rs.getString("DeadLineDay");
+							todoEndYear = rs.getString("EndYear");
+							todoEndMonth = rs.getString("EndMonth");
+							todoEndDay = rs.getString("EndDay");
+							
+							//과목 버튼 생성
+							JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+							ToDoBtn1.setBackground(Color.WHITE);
+							ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+							ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+									"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+									"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+							ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+							changePosition+=60;
+							testPane_1.add(ToDoBtn1);
+							ToDoBtn1.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+									System.out.println(buttonName);
+									EditListUI editList = new EditListUI(buttonName);
+									editList.setVisible(true);
+									dispose();
+								}
+							});
+						}
+						rs.close();
+						st.close();
+					} catch (ClassNotFoundException | SQLException e1) {
+						e1.printStackTrace();
+					} 
+				} else {
+					testPane_1.removeAll();
+					selected = -1;
+
+					try {
+						String todoSubject;
+						String todoDeadLineYear;
+						String todoDeadLineMonth;
+						String todoDeadLineDay;
+						String todoEndYear;
+						String todoEndMonth;
+						String todoEndDay;
+						String todoComplete;
+						String todoImportant;
+						String todoAlarm;
+						
+						String sQl;
+						Connection cOnn = null;
+						Statement st = null;
+						ResultSet rs = null;
+						int changePosition = 0;
+						int i = 0;
+						
+						Class.forName(DBConn.forName);
+						cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+						
+						st = cOnn.createStatement();
+						sQl = "USE TodoDB";
+						st.execute(sQl);
+						rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10'");
 						
 						while(rs.next()) {
 							todoBtnName = rs.getString("TodoName");
@@ -638,7 +706,7 @@ public class MainUI extends JFrame {
 							st = cOnn.createStatement();
 							sQl = "USE TodoDB";
 							st.execute(sQl);
-							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10' ORDER BY CompleteRate");
+							rs = st.executeQuery("SELECT * FROM TodoData ORDER BY CompleteRate");
 							
 							while(rs.next()) {
 								todoBtnName = rs.getString("TodoName");
