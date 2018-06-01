@@ -20,6 +20,7 @@
  *   김한동       3.4.0.   2018-05-30                                         todo항목 등록, 수정 기능 추가
  *   김한동       3.5.0.   2018-05-30                                        to do 항목 정보 버튼명으로 표시
  *   김한동       3.6.0.   2018-05-30                                           완료항목 표시 기능 활성화
+ *   김한동       3.7.0.   2018-06-01                                                정렬기능 구현
  * -----------------------------------
  */
 
@@ -81,6 +82,7 @@ public class MainUI extends JFrame {
 
 	static String subjectBtnName;
 	static String todoBtnName;
+	private JButton ToDoBtn1;
 	private JPanel ContentBtn;
 	private JTable table;
 
@@ -89,11 +91,11 @@ public class MainUI extends JFrame {
 			public void run() {
 				try {
 					//MainUI 실험 시
-					MainUI frame = new MainUI();
-					frame.setVisible(true);
-					//실제 실행할 때
-					//LoginUI frame = new LoginUI();
+					//MainUI frame = new MainUI();
 					//frame.setVisible(true);
+					//실제 실행할 때
+					LoginUI frame = new LoginUI();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -110,6 +112,21 @@ public class MainUI extends JFrame {
 			ContentBtn.setBorder(new EmptyBorder(5, 5, 5, 5));
 			ContentBtn.setLayout(null);
 			setContentPane(ContentBtn);
+			
+			JPanel testPane = new JPanel();
+			testPane.setBackground(Color.WHITE);
+			testPane.setBounds(8, 80, 200, 400);
+			testPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			testPane.setLayout(null);
+			ContentBtn.add(testPane);
+			
+			JPanel testPane_1 = new JPanel();
+			testPane_1.setBackground(Color.WHITE);
+			testPane_1.setBounds(220, 80, 600, 400);
+			testPane_1.setBorder(new EmptyBorder(5, 5, 5, 5));
+			testPane_1.setLayout(null);
+			ContentBtn.add(testPane_1);
+			
 			
 			JButton subRegiBtn = new JButton("+");
 			subRegiBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
@@ -160,76 +177,76 @@ public class MainUI extends JFrame {
 			checkbox.setBounds(153, 520, 180, 30);
 			ContentBtn.add(checkbox);
 			checkbox.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent e) {
-					int selected = 1;
-					
-					if(e.getStateChange() == ItemEvent.SELECTED) {
-						selected = 1; //1일때 체크 눌려있는 상태
-						try {
-							String todoSubject;
-							String todoDeadLineYear;
-							String todoDeadLineMonth;
-							String todoDeadLineDay;
-							String todoEndYear;
-							String todoEndMonth;
-							String todoEndDay;
-							String todoComplete;
-							String todoImportant;
-							String todoAlarm;
+			public void itemStateChanged(ItemEvent e) {
+				int selected = 1;
+				
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					selected = 1; //1일때 체크 눌려있는 상태
+					try {
+						String todoSubject;
+						String todoDeadLineYear;
+						String todoDeadLineMonth;
+						String todoDeadLineDay;
+						String todoEndYear;
+						String todoEndMonth;
+						String todoEndDay;
+						String todoComplete;
+						String todoImportant;
+						String todoAlarm;
+						
+						String sQl;
+						Connection cOnn = null;
+						Statement st = null;
+						ResultSet rs = null;
+						int changePosition = 0;
+						int i = 0;
+						
+						Class.forName(DBConn.forName);
+						cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+						
+						st = cOnn.createStatement();
+						sQl = "USE TodoDB";
+						st.execute(sQl);
+						rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate LIKE '10'");
+						
+						while(rs.next()) {
+							todoBtnName = rs.getString("TodoName");
+							todoSubject = rs.getString("Subject");
+							todoDeadLineYear = rs.getString("DeadLineYear");
+							todoDeadLineMonth = rs.getString("DeadLineMonth");
+							todoDeadLineDay = rs.getString("DeadLineDay");
+							todoEndYear = rs.getString("EndYear");
+							todoEndMonth = rs.getString("EndMonth");
+							todoEndDay = rs.getString("EndDay");
 							
-							String sQl;
-							Connection cOnn = null;
-							Statement st = null;
-							ResultSet rs = null;
-							int changePosition = 0;
-							int i = 0;
-							
-							Class.forName(DBConn.forName);
-							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
-							
-							st = cOnn.createStatement();
-							sQl = "USE TodoDB";
-							st.execute(sQl);
-							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate LIKE '10'");
-							
-							while(rs.next()) {
-								todoBtnName = rs.getString("TodoName");
-								todoSubject = rs.getString("Subject");
-								todoDeadLineYear = rs.getString("DeadLineYear");
-								todoDeadLineMonth = rs.getString("DeadLineMonth");
-								todoDeadLineDay = rs.getString("DeadLineDay");
-								todoEndYear = rs.getString("EndYear");
-								todoEndMonth = rs.getString("EndMonth");
-								todoEndDay = rs.getString("EndDay");
-
-								//과목 버튼 생성
-								JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
-								ToDoBtn1.setBackground(Color.WHITE);
-								ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-								ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
-										"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
-										"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
-								ToDoBtn1.setBounds(200, 100+changePosition*2, 600, 60);
-								changePosition+=60;
-								ContentBtn.add(ToDoBtn1);
-								ToDoBtn1.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent arg0) {
-										String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
-										System.out.println(buttonName);
-										EditListUI editList = new EditListUI(buttonName);
-										editList.setVisible(true);
-										dispose();
-									}
-								});
-							}
-							rs.close();
-							st.close();
-						} catch (ClassNotFoundException | SQLException e1) {
-							e1.printStackTrace();
-						} 
-					}
+							//과목 버튼 생성
+							JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+							ToDoBtn1.setBackground(Color.WHITE);
+							ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+							ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+									"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+									"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+							ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+							changePosition+=60;
+							testPane_1.add(ToDoBtn1);
+							ToDoBtn1.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent arg0) {
+									String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+									System.out.println(buttonName);
+									EditListUI editList = new EditListUI(buttonName);
+									editList.setVisible(true);
+									dispose();
+								}
+							});
+						}
+						rs.close();
+						st.close();
+					} catch (ClassNotFoundException | SQLException e1) {
+						e1.printStackTrace();
+					} 
 				}
-			});
+			}
+		});
 			
 			//여기가 색 변하는 부분
 			JPanel panel = new JPanel();
@@ -262,7 +279,7 @@ public class MainUI extends JFrame {
 				}
 			});
 			
-			JTextPane txtpnX = new JTextPane();
+			JLabel txtpnX = new JLabel();
 			txtpnX.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 			txtpnX.setText("\uD14C\uB9C8\uC0C9 \uC120\uD0DD");
 			txtpnX.setBounds(350, 520, 90, 30);
@@ -271,14 +288,401 @@ public class MainUI extends JFrame {
 			//정렬 콤보박스
 			JComboBox comboBox_1 = new JComboBox();
 			panel.add(comboBox_1);
-			comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"\uC911\uC694\uB3C4\uC21C \uC815\uB82C", "\uC2E4\uC81C\uB9C8\uAC10\uC77C \uC815\uB82C", "\uB9C8\uAC10\uAE30\uD55C \uC815\uB82C"}));
+			comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"\uC911\uC694\uB3C4\uC21C \uC815\uB82C", "\uC2E4\uC81C\uB9C8\uAC10\uC77C \uC815\uB82C", "\uB9C8\uAC10\uAE30\uD55C \uC815\uB82C", "과목명 정렬", "항목별 정렬", "완료여부 정렬"}));
 			comboBox_1.setForeground(Color.BLACK);
 			comboBox_1.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-			
+			comboBox_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					JComboBox cb = (JComboBox)arg0.getSource();
+					int index = cb.getSelectedIndex();
+					
+					if(index == 0) {
+						testPane_1.removeAll();
+						try {
+							String todoSubject;
+							String todoDeadLineYear;
+							String todoDeadLineMonth;
+							String todoDeadLineDay;
+							String todoEndYear;
+							String todoEndMonth;
+							String todoEndDay;
+							String todoComplete;
+							String todoImportant = null;
+							String todoAlarm;
+							String inputTodoImportant = null;
+							
+							int changePosition = 0;
+						
+							String sQl;
+							Connection cOnn = null;
+							Statement st = null;
+							ResultSet rs = null;
+							
+							Class.forName(DBConn.forName);
+							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+							
+							st = cOnn.createStatement();
+							sQl = "USE TodoDB";
+							st.execute(sQl);
+							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10' ORDER BY ImportantRate");
+							
+							while(rs.next()) {
+								todoImportant = rs.getString("ImportantRate");
+
+								todoBtnName = rs.getString("TodoName");
+								todoSubject = rs.getString("Subject");
+								todoDeadLineYear = rs.getString("DeadLineYear");
+								todoDeadLineMonth = rs.getString("DeadLineMonth");
+								todoDeadLineDay = rs.getString("DeadLineDay");
+								todoEndYear = rs.getString("EndYear");
+								todoEndMonth = rs.getString("EndMonth");
+								todoEndDay = rs.getString("EndDay");
+								
+								//투두 버튼 생성
+								JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+								ToDoBtn1.setBackground(Color.WHITE);
+								ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+								ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+										"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+										"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+								ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+								changePosition+=60;
+								testPane_1.add(ToDoBtn1);
+								ToDoBtn1.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+										System.out.println(buttonName);
+										EditListUI editList = new EditListUI(buttonName);
+										editList.setVisible(true);
+										dispose();
+									}
+								});
+							}
+							rs.close();
+							st.close();
+						}catch (ClassNotFoundException | SQLException e1) {
+							e1.printStackTrace();
+						} 
+					}
+					if(index == 1) {
+						testPane_1.removeAll();
+						try {
+							String todoSubject;
+							String todoDeadLineYear;
+							String todoDeadLineMonth;
+							String todoDeadLineDay;
+							String todoEndYear;
+							String todoEndMonth;
+							String todoEndDay;
+							
+							int changePosition = 0;
+						
+							String sQl;
+							Connection cOnn = null;
+							Statement st = null;
+							ResultSet rs = null;
+							
+							Class.forName(DBConn.forName);
+							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+							
+							st = cOnn.createStatement();
+							sQl = "USE TodoDB";
+							st.execute(sQl);
+							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10' ORDER BY EndYear, EndMonth, EndDay");
+							
+							while(rs.next()) {
+								todoBtnName = rs.getString("TodoName");
+								todoSubject = rs.getString("Subject");
+								todoDeadLineYear = rs.getString("DeadLineYear");
+								todoDeadLineMonth = rs.getString("DeadLineMonth");
+								todoDeadLineDay = rs.getString("DeadLineDay");
+								todoEndYear = rs.getString("EndYear");
+								todoEndMonth = rs.getString("EndMonth");
+								todoEndDay = rs.getString("EndDay");
+								
+								//투두 버튼 생성
+								JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+								ToDoBtn1.setBackground(Color.WHITE);
+								ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+								ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+										"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+										"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+								ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+								changePosition+=60;
+								testPane_1.add(ToDoBtn1);
+								ToDoBtn1.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+										System.out.println(buttonName);
+										EditListUI editList = new EditListUI(buttonName);
+										editList.setVisible(true);
+										dispose();
+									}
+								});
+							}
+							rs.close();
+							st.close();
+						}catch (ClassNotFoundException | SQLException e1) {
+							e1.printStackTrace();
+						} 
+					}
+					if(index == 2) {
+						testPane_1.removeAll();
+						try {
+							String todoSubject;
+							String todoDeadLineYear;
+							String todoDeadLineMonth;
+							String todoDeadLineDay;
+							String todoEndYear;
+							String todoEndMonth;
+							String todoEndDay;
+							
+							int changePosition = 0;
+						
+							String sQl;
+							Connection cOnn = null;
+							Statement st = null;
+							ResultSet rs = null;
+							
+							Class.forName(DBConn.forName);
+							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+							
+							st = cOnn.createStatement();
+							sQl = "USE TodoDB";
+							st.execute(sQl);
+							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10' ORDER BY DeadLineYear, DeadLineMonth, DeadLineDay");
+							
+							while(rs.next()) {
+								todoBtnName = rs.getString("TodoName");
+								todoSubject = rs.getString("Subject");
+								todoDeadLineYear = rs.getString("DeadLineYear");
+								todoDeadLineMonth = rs.getString("DeadLineMonth");
+								todoDeadLineDay = rs.getString("DeadLineDay");
+								todoEndYear = rs.getString("EndYear");
+								todoEndMonth = rs.getString("EndMonth");
+								todoEndDay = rs.getString("EndDay");
+								
+
+								
+								//투두 버튼 생성
+								JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+								ToDoBtn1.setBackground(Color.WHITE);
+								ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+								ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+										"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+										"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+								ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+								changePosition+=60;
+								testPane_1.add(ToDoBtn1);
+								ToDoBtn1.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+										System.out.println(buttonName);
+										EditListUI editList = new EditListUI(buttonName);
+										editList.setVisible(true);
+										dispose();
+									}
+								});
+							}
+							rs.close();
+							st.close();
+						}catch (ClassNotFoundException | SQLException e1) {
+							e1.printStackTrace();
+						} 
+					}
+					if(index == 3) {
+						testPane_1.removeAll();
+						try {
+							String todoSubject;
+							String todoDeadLineYear;
+							String todoDeadLineMonth;
+							String todoDeadLineDay;
+							String todoEndYear;
+							String todoEndMonth;
+							String todoEndDay;
+							
+							int changePosition = 0;
+						
+							String sQl;
+							Connection cOnn = null;
+							Statement st = null;
+							ResultSet rs = null;
+							
+							Class.forName(DBConn.forName);
+							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+							
+							st = cOnn.createStatement();
+							sQl = "USE TodoDB";
+							st.execute(sQl);
+							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10' ORDER BY Subject");
+							
+							while(rs.next()) {
+								todoBtnName = rs.getString("TodoName");
+								todoSubject = rs.getString("Subject");
+								todoDeadLineYear = rs.getString("DeadLineYear");
+								todoDeadLineMonth = rs.getString("DeadLineMonth");
+								todoDeadLineDay = rs.getString("DeadLineDay");
+								todoEndYear = rs.getString("EndYear");
+								todoEndMonth = rs.getString("EndMonth");
+								todoEndDay = rs.getString("EndDay");
+								
+								//투두 버튼 생성
+								JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+								ToDoBtn1.setBackground(Color.WHITE);
+								ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+								ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+										"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+										"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+								ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+								changePosition+=60;
+								testPane_1.add(ToDoBtn1);
+								ToDoBtn1.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+										System.out.println(buttonName);
+										EditListUI editList = new EditListUI(buttonName);
+										editList.setVisible(true);
+										dispose();
+									}
+								});
+							}
+							rs.close();
+							st.close();
+						}catch (ClassNotFoundException | SQLException e1) {
+							e1.printStackTrace();
+						} 
+					}
+					if(index == 4) {
+						testPane_1.removeAll();
+						try {
+							String todoSubject;
+							String todoDeadLineYear;
+							String todoDeadLineMonth;
+							String todoDeadLineDay;
+							String todoEndYear;
+							String todoEndMonth;
+							String todoEndDay;
+							
+							int changePosition = 0;
+						
+							String sQl;
+							Connection cOnn = null;
+							Statement st = null;
+							ResultSet rs = null;
+							
+							Class.forName(DBConn.forName);
+							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+							
+							st = cOnn.createStatement();
+							sQl = "USE TodoDB";
+							st.execute(sQl);
+							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10' ORDER BY TodoName");
+							
+							while(rs.next()) {
+								todoBtnName = rs.getString("TodoName");
+								todoSubject = rs.getString("Subject");
+								todoDeadLineYear = rs.getString("DeadLineYear");
+								todoDeadLineMonth = rs.getString("DeadLineMonth");
+								todoDeadLineDay = rs.getString("DeadLineDay");
+								todoEndYear = rs.getString("EndYear");
+								todoEndMonth = rs.getString("EndMonth");
+								todoEndDay = rs.getString("EndDay");
+								
+								//투두 버튼 생성
+								JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+								ToDoBtn1.setBackground(Color.WHITE);
+								ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+								ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+										"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+										"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+								ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+								changePosition+=60;
+								testPane_1.add(ToDoBtn1);
+								ToDoBtn1.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+										System.out.println(buttonName);
+										EditListUI editList = new EditListUI(buttonName);
+										editList.setVisible(true);
+										dispose();
+									}
+								});
+							}
+							rs.close();
+							st.close();
+						}catch (ClassNotFoundException | SQLException e1) {
+							e1.printStackTrace();
+						} 
+					}
+					if(index == 5) {
+						testPane_1.removeAll();
+						try {
+							String todoSubject;
+							String todoDeadLineYear;
+							String todoDeadLineMonth;
+							String todoDeadLineDay;
+							String todoEndYear;
+							String todoEndMonth;
+							String todoEndDay;
+							
+							int changePosition = 0;
+						
+							String sQl;
+							Connection cOnn = null;
+							Statement st = null;
+							ResultSet rs = null;
+							
+							Class.forName(DBConn.forName);
+							cOnn = DriverManager.getConnection(DBConn.URL, DBConn.ID, DBConn.PW);
+							
+							st = cOnn.createStatement();
+							sQl = "USE TodoDB";
+							st.execute(sQl);
+							rs = st.executeQuery("SELECT * FROM TodoData WHERE CompleteRate != '10' ORDER BY CompleteRate");
+							
+							while(rs.next()) {
+								todoBtnName = rs.getString("TodoName");
+								todoSubject = rs.getString("Subject");
+								todoDeadLineYear = rs.getString("DeadLineYear");
+								todoDeadLineMonth = rs.getString("DeadLineMonth");
+								todoDeadLineDay = rs.getString("DeadLineDay");
+								todoEndYear = rs.getString("EndYear");
+								todoEndMonth = rs.getString("EndMonth");
+								todoEndDay = rs.getString("EndDay");
+								
+								//투두 버튼 생성
+								JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
+								ToDoBtn1.setBackground(Color.WHITE);
+								ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+								ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
+										"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
+										"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
+								ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
+								changePosition+=60;
+								testPane_1.add(ToDoBtn1);
+								ToDoBtn1.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
+										System.out.println(buttonName);
+										EditListUI editList = new EditListUI(buttonName);
+										editList.setVisible(true);
+										dispose();
+									}
+								});
+							}
+							rs.close();
+							st.close();
+						}catch (ClassNotFoundException | SQLException e1) {
+							e1.printStackTrace();
+						} 
+					}
+				}
+			});
+	
 			JLabel lblNewLabel = new JLabel("To-Do List");
 			lblNewLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-			lblNewLabel.setBounds(15, 100, 150, 30);
-			ContentBtn.add(lblNewLabel);
+			lblNewLabel.setBounds(15, 10, 150, 30);
+			testPane.add(lblNewLabel);
 			
 			//과목 등록 버튼
 			try {
@@ -303,9 +707,9 @@ public class MainUI extends JFrame {
 						JButton subBtn = new JButton(subjectBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
 						subBtn.setBackground(Color.WHITE);
 						subBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-						subBtn.setBounds(15, 130+changePosition, 150, 40);
+						subBtn.setBounds(15, 50+changePosition, 150, 40);
 						changePosition+=40;
-						ContentBtn.add(subBtn);
+						testPane.add(subBtn);
 						subBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								String buttonName  =arg0.getSource().toString().split("text=")[1].split(",")[0];
@@ -411,16 +815,16 @@ public class MainUI extends JFrame {
 					todoEndMonth = rs.getString("EndMonth");
 					todoEndDay = rs.getString("EndDay");
 
-					//과목 버튼 생성
+					//투두 버튼 생성
 					JButton ToDoBtn1 = new JButton(todoBtnName);//("\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uACF5\uD559"); //todolist 첫번쨰버튼
 					ToDoBtn1.setBackground(Color.WHITE);
 					ToDoBtn1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 					ToDoBtn1.setText("<" + todoSubject + ">  " + todoBtnName +
 							"  마감기한 :" + todoDeadLineYear + "년" + todoDeadLineMonth + "월" + todoDeadLineDay + "일" +
 							"  실제 마감일 :" + todoEndYear + "년" + todoEndMonth + "월" + todoEndDay + "일");
-					ToDoBtn1.setBounds(200, 100+changePosition, 600, 60);
+					ToDoBtn1.setBounds(10, 40+changePosition, 580, 60);
 					changePosition+=60;
-					ContentBtn.add(ToDoBtn1);
+					testPane_1.add(ToDoBtn1);
 					ToDoBtn1.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							String buttonName  =arg0.getSource().toString().split(">  ")[1].split("  마")[0];
