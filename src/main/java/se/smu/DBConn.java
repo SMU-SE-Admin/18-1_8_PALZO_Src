@@ -15,7 +15,8 @@
  * -----------------------------------
  */
 
-package ¤¤e.smu;
+
+package se.smu;
 
 public class DBConn {
 	public static String forName = "com.mysql.jdbc.Driver";
