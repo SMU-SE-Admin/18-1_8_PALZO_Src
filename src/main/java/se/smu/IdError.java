@@ -1,7 +1,7 @@
 /**
  * title : IdError.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 1.0.0.
+ * version : 2.0.0.
  * since : 2018 - 05 - 07
  * brief : 로그인 에러 메세지 클래스
  * -----------------------------------
@@ -9,7 +9,7 @@
  *   author  version     date                        brief
  *   안동주       0.0.0.   2018-05-22                    초안 작성
  *   김한동       1.0.0.   2018-05-23     패키지 추가, import문 정렬, 닫기 버튼 기능 활성화, 버튼명 수정
- *   
+ *   김한동       2.0.0.   2018-06-01                    최종본 작성
  * -----------------------------------
  */
 
@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JLabel;
 
 public class IdError extends JFrame {
 	private JPanel contentPane;
@@ -50,7 +51,7 @@ public class IdError extends JFrame {
 		backToLogin.setBounds(300, 180, 100, 40);
 		contentPane.add(backToLogin);
 		
-		txtpnAsd = new JTextPane();
+		JLabel txtpnAsd = new JLabel();
 		txtpnAsd.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		txtpnAsd.setText("\uC798\uBABB\uB41C \uD68C\uC6D0 \uC815\uBCF4\uC785\uB2C8\uB2E4.");
 		txtpnAsd.setBounds(147, 82, 214, 61);

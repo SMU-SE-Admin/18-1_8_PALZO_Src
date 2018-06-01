@@ -1,7 +1,7 @@
 /**
  * title : ReEnterRequest.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 2.1.0.
+ * version : 3.0.0.
  * since : 2018 - 05 - 07
  * brief : 빈 칸 에러 메세지 출력 UI
  * -----------------------------------
@@ -11,13 +11,14 @@
  *   김한동       1.0.0.   2018-05-25                  패키지 추가, 주석 작성
  *   김한동       2.0.0.   2018-05-25                    닫기버튼 활성화
  *   김한동       2.1.0.   2018-05-26             Textpane 부분 JLabel로 변경
+ *   김한동       2.2.0.   2018-05-30                불필요한 import문 삭제
+ *   김한동       3.0.0.   2018-06-01                       최종본 작성
  * -----------------------------------
  */
 
 package se.smu;
 
 import se.smu.*;
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Color;
