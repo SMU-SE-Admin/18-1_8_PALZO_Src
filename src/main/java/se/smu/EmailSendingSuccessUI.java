@@ -1,13 +1,14 @@
 /**
  * title : EmailSendingSuccessUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 0.0.0.
+ * version : 1.0.0.
  * since : 2018 - 05 - 07
  * brief : 메일 전송 확인 메세지 출력
  * -----------------------------------
  * history
  *   author  version      date                            brief
  *   김한동       0.0.0.    2018-05-26                        초안 작성
+ *   김한동       1.0.0.    2018-06-01                       최종본 작성
  * -----------------------------------
  */
 

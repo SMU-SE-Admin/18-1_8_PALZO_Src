@@ -1,7 +1,7 @@
 /**
  * title : FindUserUI.java
  * author : 김한동 (aggsae@gmail.com)
- * version : 4.0.0.
+ * version : 5.0.0.
  * since : 2018 - 05 - 07
  * brief : ID, PW 찾기 UI 및 메소드 클래스
  * -----------------------------------
@@ -15,7 +15,8 @@
  *   김한동        3.0.0.   2018-05-25                   NULL 입력에 대한 예외처리
  *   김한동        3.1.0.   2018-05-30                 NULL 값에 대한 메세지 출력 추가
  *   김한동        3.2.0.   2018-05-30       Email 전송 성공 메세지 출력, 예외 발생 시 메세지, 처리문 추가
- *   김한동        4.0.0.   2018-05-31                 ID / PW 찾기 오류 수정
+ *   김한동        4.0.0.   2018-05-31                    ID / PW 찾기 오류 수정
+ *   김한동        5.0.0.   2018-06-01                         최종본 작성
  * -----------------------------------
  */
 
@@ -133,7 +134,6 @@ public class FindUserUI extends JFrame {
 						else {
 							InputTypeErrorUI typeError = new InputTypeErrorUI();
 							typeError.setVisible(true);
-							dispose();
 						}
 						
 						rs.close();
